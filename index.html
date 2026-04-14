@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Dental Presence Index — Forensic Scoring of the North American Dental Sector</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a09;
+    --off-black: #111110;
+    --dark: #1a1a18;
+    --mid: #2e2e2c;
+    --border: #2a2a28;
+    --border-light: #3a3a38;
+    --muted: #6a6a66;
+    --secondary: #9a9a96;
+    --primary: #e8e8e2;
+    --white: #f4f4ee;
+    --accent: #c8b882;
+    --accent-dim: #7a6e44;
+    --accent-glow: rgba(200, 184, 130, 0.08);
+    --red: #c0392b;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'DM Mono', 'Courier New', monospace;
+    --sans: 'Barlow', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--primary);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,9,0.95);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .nav-brand .brand-main {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-brand .brand-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover { color: var(--primary); }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent) !important;
+    border: 1px solid var(--accent-dim);
+    padding: 6px 14px;
+    border-radius: 2px;
+    transition: all 0.2s !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent-glow) !important;
+    color: var(--accent) !important;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(200,184,130,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(200,184,130,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .hero-grid-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 80%, transparent 40%, var(--black) 100%);
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--accent-dim);
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(3.2rem, 7vw, 7rem);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--white);
+    max-width: 900px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--secondary);
+    max-width: 640px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-meta {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-meta a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .hero-cta-primary {
+    color: var(--black);
+    background: var(--accent);
+    padding: 12px 28px;
+    border-radius: 2px;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+
+  .hero-cta-primary:hover { opacity: 0.85; }
+
+  .hero-cta-secondary {
+    color: var(--secondary);
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 2px;
+  }
+
+  .hero-cta-secondary:hover { color: var(--primary); border-color: var(--secondary); }
+
+  .hero-stats {
+    position: absolute;
+    right: 2rem;
+    bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: right;
+    z-index: 1;
+  }
+
+  .hero-stat-num {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 2rem; }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 200px;
+  }
+
+  /* ── THESIS ── */
+  .thesis {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .thesis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .thesis-left h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .thesis-left h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .thesis-left p {
+    font-size: 1rem;
+    color: var(--secondary);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .thesis-right {
+    padding-top: 1rem;
+  }
+
+  .mismatch-diagram {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .mismatch-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mismatch-row:last-child { border-bottom: none; }
+
+  .mismatch-row-label {
+    padding: 1.25rem;
+    border-right: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+  }
+
+  .mismatch-row-content {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .mismatch-row-content strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary);
+    margin-bottom: 0.3rem;
+  }
+
+  .mismatch-row-content p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .mismatch-gap {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: rgba(200,184,130,0.06);
+    border: 1px solid var(--accent-dim);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .mismatch-gap-icon {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .mismatch-gap p {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    line-height: 1.5;
+  }
+
+  /* ── AUDIENCES ── */
+  .audiences {
+    background: var(--black);
+  }
+
+  .audiences-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 1rem;
+  }
+
+  .audience-card {
+    background: var(--off-black);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    transition: border-color 0.25s;
+  }
+
+  .audience-card:hover { border-color: var(--border-light); }
+
+  .audience-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+  }
+
+  .audience-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .audience-card h3 {
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .audience-card .hook {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .audience-card p {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .audience-signals {
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+
+  .audience-signals-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .signal-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .signal-pill {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  /* ── DIMENSIONS ── */
+  .dimensions {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dimensions-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+    align-items: start;
+  }
+
+  .dimensions-intro h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.15;
+  }
+
+  .dimensions-intro h2 em { font-style: italic; color: var(--accent); }
+
+  .dimensions-intro p {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    line-height: 1.75;
+  }
+
+  .dim-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 3rem;
+  }
+
+  .dim-table thead tr {
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .dim-table th {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 1rem 1rem 0;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  .dim-table th:last-child { text-align: right; }
+
+  .dim-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .dim-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  .dim-table td {
+    padding: 1.25rem 1rem 1.25rem 0;
+    vertical-align: top;
+  }
+
+  .dim-code {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    padding-right: 1rem;
+    white-space: nowrap;
+  }
+
+  .dim-name {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--primary);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .dim-question {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .dim-weight-cell { text-align: right; white-space: nowrap; }
+
+  .weight-bar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .weight-pct {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--secondary);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  .weight-bar {
+    height: 3px;
+    background: var(--accent-dim);
+    border-radius: 2px;
+  }
+
+  /* ── THREE LENSES ── */
+  .lenses {
+    background: var(--black);
+  }
+
+  .lenses h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    line-height: 1.15;
+  }
+
+  .lenses h2 em { font-style: italic; color: var(--accent); }
+
+  .lenses-intro {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    max-width: 640px;
+    line-height: 1.75;
+    margin-bottom: 3rem;
+  }
+
+  .lenses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .lens-card {
+    background: var(--off-black);
+    padding: 2rem;
+  }
+
+  .lens-id {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 1rem;
+  }
+
+  .lens-card h4 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+  }
+
+  .lens-question {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--secondary);
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .lens-weights {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .lens-weight-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 9px;
+  }
+
+  .lw-code { color: var(--muted); min-width: 20px; }
+
+  .lw-bar-track {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+  }
+
+  .lw-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 1px;
+    opacity: 0.6;
+  }
+
+  .lw-pct { color: var(--secondary); min-width: 28px; text-align: right; }
+
+  .gap-patterns {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .gap-pattern-header {
+    padding: 1rem 1.5rem;
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .gap-pattern {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gap-pattern:last-child { border-bottom: none; }
+
+  .gap-code {
+    padding: 1rem 1.25rem;
+    border-right: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+  }
+
+  .gap-desc {
+    padding: 1rem 1.5rem;
+    font-size: 0.85rem;
+    color: var(--secondary);
+    line-height: 1.6;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+  }
+
+  .how h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 3rem;
+    line-height: 1.15;
+  }
+
+  .how h2 em { font-style: italic; color: var(--accent); }
+
+  .stages {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .stage {
+    background: var(--off-black);
+    padding: 2rem 1.75rem;
+  }
+
+  .stage-num {
+    font-family: var(--mono);
+    font-size: 2rem;
+    color: var(--border-light);
+    line-height: 1;
+    margin-bottom: 1.25rem;
+    font-weight: 400;
+  }
+
+  .stage h4 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .stage p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .stage-active { border-top: 2px solid var(--accent); }
+
+  .stage-active .stage-num { color: var(--accent); }
+
+  /* ── UNIVERSE ── */
+  .universe {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+  }
+
+  .universe-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .universe h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .universe h2 em { font-style: italic; color: var(--accent); }
+
+  .universe p {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .universe-counts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  .count-cell {
+    background: var(--off-black);
+    padding: 1.75rem;
+  }
+
+  .count-num {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .count-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .universe-right {
+    padding-top: 1rem;
+  }
+
+  .tier-list {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .tier-header {
+    background: var(--dark);
+    padding: 0.75rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tier-item {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .tier-item:last-child { border-bottom: none; }
+
+  .tier-name {
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    color: var(--primary);
+    font-weight: 400;
+  }
+
+  .tier-meta {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 8rem 2rem;
+    text-align: center;
+  }
+
+  .cta-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 2rem;
+  }
+
+  .cta-section h2 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-section h2 em { font-style: italic; color: var(--accent); }
+
+  .cta-section p {
+    font-size: 1rem;
+    color: var(--secondary);
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .cta-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--accent);
+    border: none;
+    padding: 14px 32px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-secondary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    background: transparent;
+    border: 1px solid var(--border-light);
+    padding: 14px 32px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover { color: var(--primary); border-color: var(--secondary); }
+
+  /* ── PARENT LINK ── */
+  .parent-link {
+    padding: 1.5rem 2rem;
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .parent-link-left {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .parent-link-right a {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .parent-link-right a:hover { color: var(--secondary); }
+
+  .parent-link-right a + a::before {
+    content: '·';
+    margin: 0 0.75rem;
+    color: var(--border-light);
+  }
+
+  /* ── STATUS BADGE ── */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+  }
+
+  .status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 3rem 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 3rem 2rem;
+    background: var(--black);
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-brand {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--secondary); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .thesis-grid,
+    .audiences-grid,
+    .dimensions-intro,
+    .universe-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+
+    .lenses-grid { grid-template-columns: 1fr; }
+
+    .stages { grid-template-columns: 1fr 1fr; }
+
+    .hero-stats { display: none; }
+
+    nav .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .stages { grid-template-columns: 1fr; }
+    section { padding: 4rem 1.25rem; }
+    .hero { padding: 0 1.25rem 3rem; }
+  }
+
+  /* ── MOBILE STICKY CTA ── */
+  .mobile-cta {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .mobile-cta {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: var(--off-black);
+      border-top: 1px solid var(--border);
+      padding: 0.875rem 1.25rem;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .mobile-cta a {
+      flex: 1;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 11px 0;
+      border-radius: 2px;
+    }
+
+    .mobile-cta-primary {
+      background: var(--accent);
+      color: var(--black);
+      font-weight: 500;
+    }
+
+    .mobile-cta-secondary {
+      color: var(--secondary);
+      border: 1px solid var(--border-light);
+    }
+
+    /* Prevent sticky bar from obscuring page bottom */
+    footer {
+      padding-bottom: 5rem;
+    }
+  }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">
+    <span class="brand-main">The Dental Presence Index</span>
+    <span class="brand-sub">Dental Technology · North America</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#the-mismatch">The mismatch</a></li>
+    <li><a href="#dimensions">The framework</a></li>
+    <li><a href="#audiences">Audiences</a></li>
+    <li><a href="#the198">The 198</a></li>
+    <li><a href="#universe">The universe</a></li>
+    <li><a href="#sample">See a score</a></li>
+    <li><a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Let%27s%20Talk" class="nav-cta">Talk to Chris →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+
+  <div class="hero-label">
+    DSOs · Dental Technology · North America
+  </div>
+
+  <h1>
+    Your competitors already know<br>
+    what your digital presence<br>
+    <em>says about you.</em>
+  </h1>
+
+  <p class="hero-sub">
+    Every patient choosing a practice, every clinician considering a role, every investor doing diligence — they all read the same signal. Most organisations in the sector have never seen it themselves. We've scored 164 organisations to establish the benchmark. If you're not in it, you can be.
+  </p>
+
+  <div style="margin-bottom:1.5rem;font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">
+    By <a href="https://www.theunanswered.co.uk" target="_blank" style="color:var(--accent-dim);text-decoration:none;border-bottom:1px solid var(--accent-dim);">Chris Kelly</a> &nbsp;·&nbsp; Fractional CPO/CTO &nbsp;·&nbsp; <a href="https://www.theunanswered.co.uk" target="_blank" style="color:var(--accent-dim);text-decoration:none;border-bottom:1px solid var(--accent-dim);">The Unanswered</a>
+  </div>
+
+  <div class="hero-meta">
+    <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Confidential%20Consultation" class="hero-cta-primary">See your position in the 164</a>
+    <a href="#the-mismatch" class="hero-cta-secondary">What this is ↓</a>
+  </div>
+
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-num">164</div>
+      <div class="hero-stat-label">Organisations scored</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">82%</div>
+      <div class="hero-stat-label">Scored underperforming or liability</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">2</div>
+      <div class="hero-stat-label">Sector leaders in the dataset</div>
+    </div>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section class="thesis" id="the-mismatch">
+  <div class="section-inner">
+    <div class="section-label">The central diagnostic</div>
+
+    <div class="thesis-grid">
+      <div class="thesis-left fade-in">
+        <h2>The question isn't whether you have a presence.<br><em>It's whether it's true.</em></h2>
+        <p>
+          Every DSO and dental technology business in North America has a digital presence. Most have invested in it. A website. A Google profile. Social channels. Some have invested heavily. None of that tells you whether what you've built is working — or whether the gap between what you claim and what the market records is larger than your competitors'.
+        </p>
+        <p>
+          The audit's central diagnostic concept is the mismatch: the spread between what an organisation presents itself as and what the market actually records. A DSO that positions as premium and patient-centred but carries a 3.2-star Google average has a mismatch. A dental technology company that claims clinical innovation but has no published outcomes data has a mismatch. The positioning isn't wrong. The gap is a liability.
+        </p>
+        <p>
+          Competitors without the same gap have a structural advantage in every channel where that gap is visible — patient acquisition, clinical recruitment, investor due diligence.
+        </p>
+      </div>
+
+      <div class="thesis-right fade-in">
+        <div class="mismatch-diagram">
+          <div class="mismatch-row">
+            <div class="mismatch-row-label">Self-presentation</div>
+            <div class="mismatch-row-content">
+              <strong>What you say you are</strong>
+              <p>Website claims. Positioning language. Brand identity. The story you control across owned digital channels.</p>
+            </div>
+          </div>
+          <div class="mismatch-row">
+            <div class="mismatch-row-label">Market perception</div>
+            <div class="mismatch-row-content">
+              <strong>What the market records</strong>
+              <p>Patient reviews. Employee sentiment. Press tone. Clinical peer commentary. The signal the market creates when you're not speaking.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mismatch-gap">
+          <div class="mismatch-gap-icon">↕</div>
+          <p>The Mismatch Index — a derived score measuring the spread between what you claim and what the market records. The higher the gap, the larger the liability. Every informed decision-maker sees it.</p>
+        </div>
+
+        <div class="mismatch-diagram">
+          <div class="mismatch-row">
+            <div class="mismatch-row-label">Competitive position</div>
+            <div class="mismatch-row-content">
+              <strong>Where you sit relative to the field</strong>
+              <p>Your mismatch compared to the 3–5 organisations competing for the same patients, clinicians, and capital in the same markets.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE 198 TRUST ANCHOR -->
+<section style="padding:5rem 2rem;background:var(--black);border-top:1px solid var(--border);" id="the198">
+  <div class="section-inner">
+    <div class="section-label">Before we pointed it at your sector</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;" class="fade-in">
+      <div>
+        <h2 style="font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;color:var(--white);line-height:1.15;margin-bottom:1.25rem">
+          The instrument was built<br>and proven elsewhere first.<br><em>That matters.</em>
+        </h2>
+        <p style="font-size:0.95rem;color:var(--secondary);line-height:1.75;margin-bottom:1rem">
+          The Dental Presence Index runs on the same forensic architecture as The 198 — a publicly available database of 198 historical corporate failures, each scored across ten death zones, with lead indicators identified for every case.
+        </p>
+        <p style="font-size:0.95rem;color:var(--secondary);line-height:1.75;margin-bottom:1rem">
+          The 198 was built first. The calibration methodology, the batch scoring process, the rubric discipline, the principle that the framework is never bent to fit a case — all of it was established there before it was applied here. You can read every scored company, every death zone definition, and every lead indicator. The instrument is visible. The methodology is not a claim.
+        </p>
+        <p style="font-size:0.95rem;color:var(--secondary);line-height:1.75;margin-bottom:2rem">
+          That's how we know it works before we point it at your sector.
+        </p>
+        <a href="https://the198.theunanswered.co.uk" target="_blank" style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid var(--accent-dim);padding:11px 22px;border-radius:2px;display:inline-block;transition:all 0.2s" onmouseover="this.style.background='rgba(200,184,130,0.08)'" onmouseout="this.style.background='transparent'">
+          Audit the auditor ↗
+        </a>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);">
+        <div style="background:var(--off-black);padding:1.5rem;">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem">The 198 — Forensic Architecture of Corporate Failure</div>
+          <div style="font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--accent);line-height:1;margin-bottom:0.3rem">198</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em">Companies scored · All historical failures</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);">
+          <div style="background:var(--off-black);padding:1.25rem;">
+            <div style="font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--primary);line-height:1;margin-bottom:0.3rem">10</div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;line-height:1.4">Death zones — each a distinct failure architecture</div>
+          </div>
+          <div style="background:var(--off-black);padding:1.25rem;">
+            <div style="font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--primary);line-height:1;margin-bottom:0.3rem">75.8%</div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;line-height:1.4">Of failures show human execution as a named causal factor</div>
+          </div>
+          <div style="background:var(--off-black);padding:1.25rem;">
+            <div style="font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--primary);line-height:1;margin-bottom:0.3rem">Free</div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;line-height:1.4">Full database access — no account required</div>
+          </div>
+          <div style="background:var(--off-black);padding:1.25rem;">
+            <div style="font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--primary);line-height:1;margin-bottom:0.3rem">v1.2</div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;line-height:1.4">Scoring rubric — calibrated against Batch 1, n=25</div>
+          </div>
+        </div>
+        <div style="background:var(--dark);padding:1.25rem;">
+          <p style="font-family:var(--serif);font-size:0.95rem;font-style:italic;color:var(--muted);line-height:1.6">"The framework bends for nothing. Ambiguity is flagged, not forced. A forced classification is worse than an honest flag."</p>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-top:0.5rem">The 198 Scoring Rubric v1.2 — governing document</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCES -->
+<section class="audiences" id="audiences">
+  <div class="section-inner">
+    <div class="section-label">Two audiences · One framework</div>
+
+    <div class="audiences-grid fade-in">
+
+      <div class="audience-card">
+        <div class="audience-tag">Segment 01 · DSO</div>
+        <h3>Dental Support Organisations</h3>
+        <p class="hook">'Your competitors are winning patients and clinicians you are losing.'</p>
+        <p>
+          Multi-site dental practice operator groups. 10 or more locations. PE-backed, founder-led, and every model in between. The primary competitive dimension for a DSO is patient acquisition and clinical talent. The digital presence is where that competition plays out before a single appointment is booked.
+        </p>
+        <p>
+          A DSO that positions as premium and patient-centred but carries a 3.2-star review average and a Glassdoor built on complaints about rushed appointments is not just underperforming. Every patient and clinician who does a five-minute check is being lost to a competitor without the same gap. The question the audit answers is not whether this is happening — it is exactly how large the gap is.
+        </p>
+
+        <div class="audience-signals">
+          <div class="audience-signals-label">Primary market signals scored</div>
+          <div class="signal-list">
+            <span class="signal-pill">Google reviews</span>
+            <span class="signal-pill">Healthgrades</span>
+            <span class="signal-pill">Glassdoor</span>
+            <span class="signal-pill">Indeed</span>
+            <span class="signal-pill">Local SEO</span>
+            <span class="signal-pill">Location pages</span>
+            <span class="signal-pill">Clinician profiles</span>
+            <span class="signal-pill">Booking flow</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="audience-card">
+        <div class="audience-tag">Segment 02 · Dental Technology</div>
+        <h3>Dental Technology Businesses</h3>
+        <p class="hook">'Your credibility gap is costing you clinical adoption and investor confidence.'</p>
+        <p>
+          VC/PE-backed dental technology businesses — software, devices, diagnostics, workflow. From pre-Series A to NASDAQ-listed. The primary competitive dimension for a dental technology business is clinical adoption and investor credibility. Neither happens without an evidence infrastructure.
+        </p>
+        <p>
+          A dental technology company that claims to be evidence-based but has no published outcomes data, no named KOL relationships, and no presence in dental trade media cannot cross the clinical trust threshold — regardless of how much the website cost. The gap between what a founder believes their digital identity communicates and what a clinical buyer finds when they search is the specific gap this audit quantifies.
+        </p>
+
+        <div class="audience-signals">
+          <div class="audience-signals-label">Primary market signals scored</div>
+          <div class="signal-list">
+            <span class="signal-pill">Trade press coverage</span>
+            <span class="signal-pill">FDA clearances</span>
+            <span class="signal-pill">Clinical outcomes data</span>
+            <span class="signal-pill">KOL relationships</span>
+            <span class="signal-pill">LinkedIn signal</span>
+            <span class="signal-pill">Peer citations</span>
+            <span class="signal-pill">Conference presence</span>
+            <span class="signal-pill">Analyst coverage</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SAMPLE SCORECARD -->
+<section style="padding:6rem 2rem;background:var(--off-black);border-top:1px solid var(--border);" id="sample">
+  <div class="section-inner">
+    <div class="section-label">What a score looks like</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:3rem">
+      <div class="fade-in">
+        <h2 style="font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;color:var(--white);line-height:1.15;margin-bottom:1.25rem">
+          This is the format.<br><em>The numbers are real.<br>The name isn't.</em>
+        </h2>
+        <p style="font-size:0.9rem;color:var(--secondary);line-height:1.75;margin-bottom:0.75rem">
+          Composite organisation. Regional DSO, Southeast US, approximately 45 locations, PE-backed. Built from patterns observed across the calibration batch — not a real organisation, but a real score profile.
+        </p>
+        <p style="font-size:0.9rem;color:var(--secondary);line-height:1.75">
+          This is the level of specificity every organisation in the dataset receives. A position, a gap, and a named priority — not a summary, not a recommendation to "invest in digital." A forensic finding with a single actionable conclusion.
+        </p>
+      </div>
+      <div class="fade-in" style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);padding-top:0.5rem;line-height:2">
+        Composite · For illustration only<br>
+        Regional DSO · Southeast US<br>
+        ~45 locations · PE-backed<br>
+        Scored: Q1 2026 · Segment: DSO
+      </div>
+    </div>
+
+    <!-- THE SCORECARD -->
+    <div style="border:1px solid var(--border);border-radius:2px;overflow:hidden;" class="fade-in">
+
+      <!-- Header -->
+      <div style="background:var(--dark);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">The Dental Presence Index · Scored Report</div>
+          <div style="font-family:var(--serif);font-size:1.4rem;font-weight:400;color:var(--white)">Composite Regional DSO</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.08em;margin-top:0.25rem">Southeast US &nbsp;·&nbsp; ~45 locations &nbsp;·&nbsp; PE-backed &nbsp;·&nbsp; Scored Q1 2026</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem">Presence tier</div>
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;color:var(--accent);border:1px solid var(--accent-dim);padding:5px 14px;border-radius:2px;text-transform:uppercase">Underperforming</div>
+        </div>
+      </div>
+
+      <!-- OPS + MI row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border);">
+        <div style="background:var(--off-black);padding:1.5rem 2rem;">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Overall Presence Score</div>
+          <div style="font-family:var(--serif);font-size:2.8rem;font-weight:400;color:var(--primary);line-height:1">4.3<span style="font-size:1.2rem;color:var(--muted)">/10</span></div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:0.4rem;letter-spacing:0.08em">Sector range: 0.0 – 8.4</div>
+        </div>
+        <div style="background:var(--off-black);padding:1.5rem 2rem;">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Mismatch Index</div>
+          <div style="font-family:var(--serif);font-size:2.8rem;font-weight:400;color:#c0392b;line-height:1">+2.4</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:0.4rem;letter-spacing:0.08em">Moderate mismatch band</div>
+        </div>
+        <div style="background:var(--off-black);padding:1.5rem 2rem;">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Competitive Delta</div>
+          <div style="font-family:var(--serif);font-size:2.8rem;font-weight:400;color:var(--primary);line-height:1">4<span style="font-size:1.2rem;color:var(--muted)">/5</span></div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:0.4rem;letter-spacing:0.08em">Ranked 4th of 5 in competitive set</div>
+        </div>
+      </div>
+
+      <!-- Dimension scores -->
+      <div style="padding:1.75rem 2rem;border-bottom:1px solid var(--border);background:var(--off-black);">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem">Dimension scores</div>
+        <div style="display:flex;flex-direction:column;gap:0.9rem;">
+
+          <div style="display:grid;grid-template-columns:140px 1fr 40px;gap:1rem;align-items:center;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--secondary);letter-spacing:0.08em">D1 Discoverability</div>
+            <div style="background:var(--dark);height:6px;border-radius:1px;overflow:hidden;">
+              <div style="width:52%;height:100%;background:var(--secondary);border-radius:1px;"></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--primary);text-align:right">5.2</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:140px 1fr 40px;gap:1rem;align-items:center;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--secondary);letter-spacing:0.08em">D2 Credibility Signal</div>
+            <div style="background:var(--dark);height:6px;border-radius:1px;overflow:hidden;">
+              <div style="width:38%;height:100%;background:var(--secondary);border-radius:1px;"></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--primary);text-align:right">3.8</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:140px 1fr 40px;gap:1rem;align-items:center;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--secondary);letter-spacing:0.08em">D3 Identity Coherence</div>
+            <div style="background:var(--dark);height:6px;border-radius:1px;overflow:hidden;">
+              <div style="width:34%;height:100%;background:var(--secondary);border-radius:1px;"></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--primary);text-align:right">3.4</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:140px 1fr 40px;gap:1rem;align-items:center;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--secondary);letter-spacing:0.08em">D4 Market Voice</div>
+            <div style="background:var(--dark);height:6px;border-radius:1px;overflow:hidden;">
+              <div style="width:61%;height:100%;background:var(--secondary);border-radius:1px;"></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--primary);text-align:right">6.1</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:140px 1fr 40px;gap:1rem;align-items:center;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--secondary);letter-spacing:0.08em">D5 Competitive Delta</div>
+            <div style="background:var(--dark);height:6px;border-radius:1px;overflow:hidden;">
+              <div style="width:37%;height:100%;background:var(--secondary);border-radius:1px;"></div>
+            </div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--primary);text-align:right">3.7</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Mismatch explanation -->
+      <div style="padding:1.5rem 2rem;border-bottom:1px solid var(--border);background:rgba(192,57,43,0.05);display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#c0392b;white-space:nowrap;padding-top:2px">Mismatch finding</div>
+        <p style="font-size:0.85rem;color:var(--secondary);line-height:1.65">
+          Self-presentation score (avg D1–D3): <strong style="color:var(--primary);font-weight:500">4.5</strong> &nbsp;·&nbsp; Market perception score (D4): <strong style="color:var(--primary);font-weight:500">6.1</strong> &nbsp;·&nbsp; MI: <strong style="color:#c0392b;font-weight:500">−1.6</strong> &nbsp;·&nbsp; The market is recording more positively than the owned presence claims. A strong patient review profile (4.3 avg, 680+ reviews) is not being matched by the credibility infrastructure or brand coherence of the owned digital presence. The gap is an opportunity being left unused.
+        </p>
+      </div>
+
+      <!-- Framework scores -->
+      <div style="padding:1.5rem 2rem;border-bottom:1px solid var(--border);background:var(--off-black);">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem">Framework scores</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);">
+          <div style="background:var(--dark);padding:1rem 1.25rem;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.4rem">F1 Patient & Talent</div>
+            <div style="font-family:var(--serif);font-size:1.8rem;font-weight:400;color:var(--primary);line-height:1">5.1</div>
+          </div>
+          <div style="background:var(--dark);padding:1rem 1.25rem;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.4rem">F2 Clinical Credibility</div>
+            <div style="font-family:var(--serif);font-size:1.8rem;font-weight:400;color:var(--primary);line-height:1">4.4</div>
+          </div>
+          <div style="background:var(--dark);padding:1rem 1.25rem;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.4rem">F3 Investor & PE</div>
+            <div style="font-family:var(--serif);font-size:1.8rem;font-weight:400;color:var(--primary);line-height:1">3.9</div>
+          </div>
+        </div>
+        <div style="margin-top:0.75rem;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.08em;line-height:1.6">
+          Pattern: F1 high / F3 low — commercially functional but structurally underprepared for acquisition scrutiny. Identity fragmentation across acquired sites would surface immediately under PE diligence.
+        </div>
+      </div>
+
+      <!-- Priority gap -->
+      <div style="padding:1.75rem 2rem;background:var(--dark);">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent-dim);margin-bottom:0.75rem">Priority gap — single intervention identified</div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;color:var(--accent);border:1px solid var(--accent-dim);padding:6px 14px;border-radius:2px;white-space:nowrap">D3 Identity Coherence</div>
+          <p style="font-size:0.88rem;color:var(--secondary);line-height:1.65">
+            Three acquired practices in FL and GA are operating with pre-acquisition digital identities — separate Google Business Profiles, different naming conventions, and no link to the parent brand. This is visible to any patient, clinician, or investor researching the group in those markets. Closing this gap moves D3 from 3.4 to an estimated 5.5–6.0, reduces the F3 framework gap from 1.2 to under 0.5, and removes the most visible due diligence flag in the dataset. Tractable within 60 days.
+          </p>
+        </div>
+      </div>
+
+    </div>
+    <!-- end scorecard -->
+
+  </div>
+</section>
+
+
+
+<!-- DIMENSIONS -->
+<section class="dimensions" id="dimensions">
+  <div class="section-inner">
+    <div class="section-label">How the score is produced</div>
+
+    <div class="dimensions-intro">
+      <div class="fade-in">
+        <h2>Five dimensions.<br><em>Every one of them<br>visible in that scorecard.</em></h2>
+      </div>
+      <div class="fade-in">
+        <p>
+          The score you just saw was produced by five dimensions, each weighted by how much it drives commercial outcomes in the dental sector. D4 Market Voice — the patient reviews, the employee sentiment, the press record — carries the highest weight in the patient and talent framework because it's the signal that makes or loses the decision before a single conversation happens.
+        </p>
+        <p>
+          The Mismatch Index isn't a separate judgement. It's a calculation: what the organisation controls (D1, D2, D3) versus what the market records independently (D4). The gap is the finding. The Priority Gap is where a targeted intervention closes it fastest.
+        </p>
+      </div>
+    </div>
+
+    <table class="dim-table fade-in">
+      <thead>
+        <tr>
+          <th style="width:40px">#</th>
+          <th>Dimension</th>
+          <th>Forensic question</th>
+          <th class="dim-weight-cell">OPS Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="dim-code">D1</td>
+          <td>
+            <span class="dim-name">Discoverability</span>
+          </td>
+          <td><span class="dim-question">Can the right audiences find this organisation when they are actively looking?</span></td>
+          <td class="dim-weight-cell">
+            <div class="weight-bar-wrap">
+              <span class="weight-pct">20%</span>
+              <div class="weight-bar" style="width:60px"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="dim-code">D2</td>
+          <td>
+            <span class="dim-name">Credibility Signal</span>
+          </td>
+          <td><span class="dim-question">When found, does the evidence support the claims being made?</span></td>
+          <td class="dim-weight-cell">
+            <div class="weight-bar-wrap">
+              <span class="weight-pct">25%</span>
+              <div class="weight-bar" style="width:75px"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="dim-code">D3</td>
+          <td>
+            <span class="dim-name">Identity Coherence</span>
+          </td>
+          <td><span class="dim-question">Does the organisation present one consistent story across all touchpoints?</span></td>
+          <td class="dim-weight-cell">
+            <div class="weight-bar-wrap">
+              <span class="weight-pct">15%</span>
+              <div class="weight-bar" style="width:45px"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="dim-code">D4</td>
+          <td>
+            <span class="dim-name">Market Voice</span>
+          </td>
+          <td><span class="dim-question">What does the market record when the organisation is not speaking?</span></td>
+          <td class="dim-weight-cell">
+            <div class="weight-bar-wrap">
+              <span class="weight-pct">25%</span>
+              <div class="weight-bar" style="width:75px"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="dim-code">D5</td>
+          <td>
+            <span class="dim-name">Competitive Delta</span>
+          </td>
+          <td><span class="dim-question">Relative to direct competitors: is this organisation gaining or losing ground?</span></td>
+          <td class="dim-weight-cell">
+            <div class="weight-bar-wrap">
+              <span class="weight-pct">15%</span>
+              <div class="weight-bar" style="width:45px"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);" class="fade-in">
+      <div style="background:var(--dark);padding:1.25rem 1.5rem;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Presence tiers</div>
+        <div style="font-family:var(--mono);font-size:0.8rem;color:var(--secondary);line-height:1.8">
+          Sector leader &nbsp;·&nbsp; OPS &gt; 7.5<br>
+          Competitive &nbsp;·&nbsp; OPS 5.5–7.5<br>
+          Underperforming &nbsp;·&nbsp; OPS 3.5–5.5<br>
+          Liability &nbsp;·&nbsp; OPS &lt; 3.5
+        </div>
+      </div>
+      <div style="background:var(--dark);padding:1.25rem 1.5rem;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Mismatch index bands</div>
+        <div style="font-family:var(--mono);font-size:0.8rem;color:var(--secondary);line-height:1.8">
+          Severe &nbsp;·&nbsp; MI &gt; +3.0<br>
+          Moderate &nbsp;·&nbsp; MI +1.5 to +3.0<br>
+          Acceptable &nbsp;·&nbsp; MI −1.5 to +1.5<br>
+          Positive signal &nbsp;·&nbsp; MI &lt; −1.5
+        </div>
+      </div>
+      <div style="background:var(--dark);padding:1.25rem 1.5rem;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Priority gap</div>
+        <div style="font-family:var(--serif);font-size:0.9rem;font-style:italic;color:var(--secondary);line-height:1.7">
+          One gap is assigned to each organisation. It identifies the single intervention that would generate the greatest improvement in OPS and MI simultaneously.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- THREE LENSES -->
+<section class="lenses" id="lenses">
+  <div class="section-inner">
+    <div class="section-label">Three readings of the same score</div>
+
+    <h2>The same five scores.<br><em>Read differently depending<br>on who is looking.</em></h2>
+    <p class="lenses-intro">
+      A patient choosing a practice, a clinician considering a role, and a PE firm evaluating an acquisition are reading the same digital presence — but weighting it differently. The audit produces three framework scores from the same five dimensions, one for each audience. The gaps between those scores are often the most actionable finding.
+    </p>
+
+    <div class="lenses-grid fade-in">
+
+      <div class="lens-card">
+        <div class="lens-id">F1 · Patient & Talent</div>
+        <h4>Patient & Talent Acquisition</h4>
+        <p class="lens-question">Is this organisation winning the patients and clinicians it competes for?</p>
+        <div class="lens-weights">
+          <div class="lens-weight-row">
+            <span class="lw-code">D1</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:71%"></div></div>
+            <span class="lw-pct">25%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D2</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:57%"></div></div>
+            <span class="lw-pct">20%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D3</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:29%"></div></div>
+            <span class="lw-pct">10%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D4</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:100%"></div></div>
+            <span class="lw-pct">35%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D5</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:29%"></div></div>
+            <span class="lw-pct">10%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lens-card">
+        <div class="lens-id">F2 · Clinical Credibility</div>
+        <h4>Clinical Credibility & Market Adoption</h4>
+        <p class="lens-question">Is this organisation winning the trust of clinical buyers and partners?</p>
+        <div class="lens-weights">
+          <div class="lens-weight-row">
+            <span class="lw-code">D1</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:43%"></div></div>
+            <span class="lw-pct">15%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D2</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:100%"></div></div>
+            <span class="lw-pct">40%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D3</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:43%"></div></div>
+            <span class="lw-pct">15%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D4</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:57%"></div></div>
+            <span class="lw-pct">20%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D5</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:29%"></div></div>
+            <span class="lw-pct">10%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lens-card">
+        <div class="lens-id">F3 · Investor & PE</div>
+        <h4>Investor & PE Readiness</h4>
+        <p class="lens-question">Does this digital presence support a credible investment narrative?</p>
+        <div class="lens-weights">
+          <div class="lens-weight-row">
+            <span class="lw-code">D1</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:29%"></div></div>
+            <span class="lw-pct">10%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D2</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:71%"></div></div>
+            <span class="lw-pct">25%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D3</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:57%"></div></div>
+            <span class="lw-pct">20%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D4</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:57%"></div></div>
+            <span class="lw-pct">20%</span>
+          </div>
+          <div class="lens-weight-row">
+            <span class="lw-code">D5</span>
+            <div class="lw-bar-track"><div class="lw-bar-fill" style="width:71%"></div></div>
+            <span class="lw-pct">25%</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="gap-patterns fade-in">
+      <div class="gap-pattern-header">Diagnostic framework gap patterns</div>
+      <div class="gap-pattern">
+        <div class="gap-code">F1 high / F3 low</div>
+        <div class="gap-desc">Commercially effective but structurally unprepared for acquisition or investment. Winning patients and clinicians today — identity fragmentation or credibility gaps would surface immediately under due diligence. Common profile for rapidly acquired DSO groups that have not integrated their digital footprint.</div>
+      </div>
+      <div class="gap-pattern">
+        <div class="gap-code">F2 high / F1 low</div>
+        <div class="gap-desc">Strong clinical credibility but poor patient-facing presence. The evidence infrastructure exists but is not being translated into patient trust or local discoverability. Common for technology-first dental businesses or academic-origin DSOs that have underinvested in consumer-facing digital.</div>
+      </div>
+      <div class="gap-pattern">
+        <div class="gap-code">F3 high / F1 low</div>
+        <div class="gap-desc">Investment narrative is well-constructed but commercial execution is underperforming. Looks good in a deck — is not winning the day-to-day competition for patients and clinicians. A governance risk: the digital presence is investor-facing, not market-facing.</div>
+      </div>
+      <div class="gap-pattern">
+        <div class="gap-code">All three low</div>
+        <div class="gap-desc">Systemic digital presence failure. No commercial audience is being well served. This profile is the primary commercial hook for the audit's outreach. Priority Gap intervention is urgent.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="how" id="how">
+  <div class="section-inner">
+    <div class="section-label">What the Index produces</div>
+
+    <h2>Your competitors already<br><em>know what their presence says.<br>Do you?</em></h2>
+
+    <p style="font-size:0.95rem;color:var(--secondary);max-width:620px;line-height:1.75;margin-bottom:3rem">
+      Every organisation in the audit receives a scored position across five dimensions, a Mismatch Index, and a Competitive Delta against the organisations competing for the same patients, clinicians, and capital. The score exists whether you see it or not. The gap is visible to anyone doing due diligence before a decision — a patient, a clinician, an investor.
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem;" class="fade-in">
+      <div style="background:var(--off-black);padding:2rem;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-dim);margin-bottom:1.25rem">Your position</div>
+        <p style="font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--white);line-height:1.3;margin-bottom:0.75rem">Where you sit in the sector</p>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.6">An Overall Presence Score, a Presence Tier, and a ranked position within your segment — DSO or Dental Technology — against the organisations you actually compete with.</p>
+      </div>
+      <div style="background:var(--off-black);padding:2rem;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-dim);margin-bottom:1.25rem">The gap</div>
+        <p style="font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--white);line-height:1.3;margin-bottom:0.75rem">What the market records vs. what you claim</p>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.6">A Mismatch Index quantifying the spread between your self-presentation and the market's independent signal. Every informed decision-maker already sees this gap. Now you can too.</p>
+      </div>
+      <div style="background:var(--off-black);padding:2rem;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-dim);margin-bottom:1.25rem">The priority</div>
+        <p style="font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--white);line-height:1.3;margin-bottom:0.75rem">Where to intervene first</p>
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.6">A single Priority Gap — the one dimension where a targeted intervention would generate the greatest improvement in position and the largest reduction in mismatch simultaneously.</p>
+      </div>
+    </div>
+
+    <div style="border:1px solid var(--border);border-radius:2px;padding:2.5rem;background:var(--off-black);" class="fade-in">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;">
+        <div>
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem">If you're in the sector</div>
+          <p style="font-family:var(--serif);font-size:1.4rem;font-weight:400;color:var(--white);line-height:1.35;margin-bottom:0.75rem">You're already in this dataset — or you want to be. Either way, the next step is a call with Chris to walk through your score, your gaps, and what to do about them.</p>
+          <p style="font-size:0.88rem;color:var(--secondary);line-height:1.65">No report to buy. Just a conversation.</p>
+        </div>
+        <div style="flex-shrink:0">
+          <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Let%27s%20Talk" class="btn-primary" style="white-space:nowrap">Talk to Chris →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- UNIVERSE -->
+<section class="universe" id="universe">
+  <div class="section-inner">
+    <div class="section-label">The organisation universe</div>
+
+    <div class="universe-grid">
+      <div class="fade-in">
+        <h2>164 organisations.<br><em>The benchmark cohort.<br>82% underperforming<br>or liability.</em></h2>
+        <p>
+          164 organisations scored across DSO and dental technology — from Heartland Dental with 1,900+ locations to pre-Series A dental AI businesses that launched in 2024. This is the benchmark cohort: the established field against which every new score is measured.
+        </p>
+        <p>
+          Only two organisations in the entire dataset scored Sector Leader. The rest sit in Competitive, Underperforming, or Liability — and most don't know which. If you're not in the initial set, you can be scored against it.
+        </p>
+        <div class="universe-counts">
+          <div class="count-cell">
+            <div class="count-num">90</div>
+            <div class="count-label">DSOs scored</div>
+          </div>
+          <div class="count-cell">
+            <div class="count-num">74</div>
+            <div class="count-label">Dental tech businesses</div>
+          </div>
+          <div class="count-cell">
+            <div class="count-num">82%</div>
+            <div class="count-label">Underperforming or liability tier</div>
+          </div>
+          <div class="count-cell">
+            <div class="count-num">2</div>
+            <div class="count-label">Sector leaders in the full dataset</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="universe-right fade-in">
+        <div class="tier-list">
+          <div class="tier-header">DSO segment — selected organisations</div>
+          <div class="tier-item">
+            <span class="tier-name">Heartland Dental</span>
+            <span class="tier-meta">1,900+ locations · KKR-backed</span>
+          </div>
+          <div class="tier-item">
+            <span class="tier-name">TAG – The Aspen Group</span>
+            <span class="tier-meta">1,300+ locations · Ares Management</span>
+          </div>
+          <div class="tier-item">
+            <span class="tier-name">Pacific Dental Services</span>
+            <span class="tier-meta">1,000+ locations · Founder / PE</span>
+          </div>
+          <div class="tier-item">
+            <span class="tier-name">Tend</span>
+            <span class="tier-meta">25 locations · $125M Series D</span>
+          </div>
+          <div class="tier-item">
+            <span class="tier-name">Vida Dental</span>
+            <span class="tier-meta">12 locations · Community care</span>
+          </div>
+        </div>
+
+        <div class="tier-list">
+          <div class="tier-header">Dental technology — selected organisations</div>
+          <div class="tier-item">
+            <span class="tier-name">Overjet</span>
+            <span class="tier-meta">AI diagnostics · FDA-cleared</span>
+          </div>
+          <div class="tier-item">
+            <span class="tier-name">Pearl (Second Opinion)</span>
+            <span class="tier-meta">AI diagnostics · $98M raised</span>
+          </div>
+          <div class="tier-item">
+            <span class="tier-name">Dandy</span>
+            <span class="tier-meta">Digital lab · $170M+ raised</span>
+          </div>
+          <div class="tier-item">
+            <span class="tier-name">Peerlogic</span>
+            <span class="tier-meta">AI workflow · $5.65M Seed</span>
+          </div>
+          <div class="tier-item">
+            <span class="tier-name">CoTreat</span>
+            <span class="tier-meta">AI diagnostics · Pre-scale</span>
+          </div>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:var(--muted);text-align:right;margin-top:0.75rem">
+          Partial list. Full universe confidential until commercial activation.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="status-badge">
+    <span class="status-dot"></span>
+    Scoring complete · 164 organisations · Dataset live
+  </div>
+
+  <h2>You're either already in this.<br><em>Or you should be.</em></h2>
+
+  <p>
+    164 organisations form the benchmark cohort. If you're in it, your score exists — and so does every competitor's. Either way, the conversation is the same: a call with Chris to walk through your findings, understand where the gaps are, and leave with a clear action plan.
+  </p>
+
+  <div style="max-width:520px;margin:0 auto 2.5rem;padding:1.25rem 1.75rem;border:1px solid var(--border);border-radius:2px;text-align:left;">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">About the analyst</div>
+    <p style="font-size:0.9rem;color:var(--secondary);line-height:1.65;margin:0">
+      <a href="https://www.theunanswered.co.uk" target="_blank" style="color:var(--primary);text-decoration:none;border-bottom:1px solid var(--border-light)">Chris Kelly</a> is a Fractional CPO/CTO and the founder of <a href="https://www.theunanswered.co.uk" target="_blank" style="color:var(--primary);text-decoration:none;border-bottom:1px solid var(--border-light)">The Unanswered</a> — a forensic advisory practice working with founder-led businesses. The Dental Presence Index is how the conversation with the dental sector starts.
+    </p>
+  </div>
+
+  <div class="cta-buttons">
+    <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Confidential%20Consultation" class="btn-primary">See your position in the 164 — confidential</a>
+    <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Score%20Walkthrough" class="btn-secondary">Book a 20-minute score walkthrough</a>
+  </div>
+
+  <p style="margin-top:2rem;font-family:var(--mono);font-size:9px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+    Also relevant to PE firms and investors evaluating the sector &nbsp;·&nbsp; <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Investor%20Enquiry" style="color:var(--accent-dim);text-decoration:none">Talk to us</a>
+  </p>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div style="display:flex;flex-direction:column;gap:0.4rem;">
+      <div class="footer-brand">
+        The Dental Presence Index &nbsp;·&nbsp; A project of The Unanswered &nbsp;·&nbsp; © 2026
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;color:var(--muted)">
+        Built and maintained by <a href="https://www.theunanswered.co.uk" target="_blank" style="color:var(--accent-dim);text-decoration:none;border-bottom:1px solid var(--border);transition:color 0.2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--accent-dim)'">Chris Kelly</a> &nbsp;·&nbsp; Fractional CPO/CTO &nbsp;·&nbsp; The Unanswered
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="https://the198.theunanswered.co.uk">The 198</a>
+      <a href="https://www.theunanswered.co.uk">The Unanswered</a>
+      <a href="https://www.theunanswered.co.uk/privacy-policy.html">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        const offset = 64;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mobile-cta">
+  <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Confidential%20Consultation" class="mobile-cta-primary">See your position</a>
+  <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Score%20Walkthrough" class="mobile-cta-secondary">Book a walkthrough</a>
+</div>
+
+</body>
+</html>
