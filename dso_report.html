@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSO Digital Presence Audit — Intelligence Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap');
+
+:root {
+  --ink: #0d0d12;
+  --paper: #f6f4ef;
+  --paper-mid: #ece9e1;
+  --paper-dark: #d8d3c6;
+  --accent: #c13b25;
+  --accent-soft: #f0ddd9;
+  --gold: #b08830;
+  --gold-soft: #f2e9d0;
+  --teal: #1e6b5c;
+  --teal-soft: #d4ece7;
+  --steel: #3a4a5c;
+  --steel-soft: #dce3ec;
+  --muted: #7a7a8c;
+  --border: rgba(13,13,18,0.10);
+  --border-strong: rgba(13,13,18,0.22);
+  --shadow: 0 2px 16px rgba(13,13,18,0.07);
+  --shadow-lg: 0 8px 40px rgba(13,13,18,0.14);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--paper);
+  color: #2a2a35;
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+/* ─── LOADING ─── */
+#loading {
+  position: fixed; inset: 0;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 20px; z-index: 9999;
+  transition: opacity 0.4s;
+}
+#loading.hidden { opacity: 0; pointer-events: none; }
+.loader-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; color: white;
+  letter-spacing: 0.02em;
+}
+.loader-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+.loader-bar-wrap {
+  width: 240px; height: 2px;
+  background: rgba(255,255,255,0.12);
+}
+.loader-bar {
+  height: 100%; background: var(--accent);
+  width: 0%; animation: loadProgress 1.2s ease forwards;
+}
+@keyframes loadProgress { to { width: 100%; } }
+
+/* ─── LANDING ─── */
+#landing { min-height: 100vh; display: flex; flex-direction: column; }
+
+.landing-header {
+  padding: 40px 56px 28px;
+  border-bottom: 1px solid var(--border-strong);
+  display: flex; justify-content: space-between;
+  align-items: flex-end; flex-wrap: wrap; gap: 16px;
+}
+.brand-block {}
+.brand-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.22em;
+  color: var(--muted); text-transform: uppercase; margin-bottom: 6px;
+}
+.brand-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; color: var(--ink); line-height: 1;
+}
+.brand-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  letter-spacing: 0.1em; margin-top: 5px;
+}
+.landing-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  line-height: 1.9; text-align: right;
+}
+
+.landing-hero {
+  padding: 52px 56px 36px;
+}
+.landing-hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 4.5vw, 52px);
+  line-height: 1.1; color: var(--ink);
+  max-width: 760px; margin-bottom: 18px;
+}
+.landing-hero h1 em { font-style: italic; color: var(--accent); }
+.landing-hero p {
+  font-size: 15px; line-height: 1.75;
+  color: var(--muted); max-width: 620px;
+}
+
+/* SECTOR STATS */
+.sector-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px; background: var(--border-strong);
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  margin: 0 56px 0;
+}
+.stat-cell {
+  background: var(--paper);
+  padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.stat-n {
+  font-family: 'DM Serif Display', serif;
+  font-size: 34px; color: var(--ink); line-height: 1;
+}
+.stat-l {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.14em;
+  color: var(--muted); text-transform: uppercase;
+}
+
+/* SELECTOR */
+.selector-section { padding: 36px 56px 64px; flex: 1; }
+
+.selector-controls {
+  display: flex; gap: 10px;
+  margin-bottom: 24px; flex-wrap: wrap; align-items: center;
+}
+.search-wrap { position: relative; flex: 1; min-width: 220px; }
+.search-wrap::before {
+  content: '⌕'; position: absolute;
+  left: 12px; top: 50%; transform: translateY(-52%);
+  color: var(--muted); font-size: 17px; pointer-events: none;
+}
+input[type="text"] {
+  width: 100%; padding: 11px 12px 11px 36px;
+  border: 1px solid var(--border-strong);
+  background: white; font-family: 'Syne', sans-serif;
+  font-size: 13px; color: var(--ink); outline: none;
+  transition: border-color 0.2s;
+}
+input[type="text"]:focus { border-color: var(--accent); }
+
+.filt {
+  padding: 11px 16px;
+  border: 1px solid var(--border-strong);
+  background: white; font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.08em;
+  color: #2a2a35; cursor: pointer;
+  transition: all 0.18s; white-space: nowrap;
+}
+.filt.active, .filt:hover {
+  background: var(--ink); color: white; border-color: var(--ink);
+}
+.sort-sel {
+  padding: 11px 14px;
+  border: 1px solid var(--border-strong);
+  background: white; font-family: 'DM Mono', monospace;
+  font-size: 10px; color: #2a2a35; outline: none; cursor: pointer;
+}
+
+/* ORG GRID */
+.org-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 1px; background: var(--border);
+}
+.org-card {
+  background: white; padding: 18px 20px;
+  cursor: pointer; transition: all 0.18s;
+  display: flex; flex-direction: column; gap: 9px;
+  border-left: 3px solid transparent;
+}
+.org-card:hover {
+  background: var(--paper-mid);
+  border-left-color: var(--accent);
+}
+.org-card-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 8px;
+}
+.org-name {
+  font-size: 12.5px; font-weight: 700;
+  line-height: 1.35; color: var(--ink); flex: 1;
+}
+.org-id {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; color: var(--muted);
+  letter-spacing: 0.1em; white-space: nowrap; margin-top: 2px;
+}
+.org-card-middle {
+  display: flex; align-items: center; gap: 12px;
+}
+.ops-big-sm {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px; line-height: 1; color: var(--ink);
+}
+.ops-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-top: 2px;
+}
+.org-bar-track {
+  flex: 1; height: 3px; background: var(--paper-dark);
+}
+.org-bar-fill { height: 100%; background: var(--accent); }
+
+.org-card-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.tier-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.07em;
+  padding: 3px 8px; text-transform: uppercase; font-weight: 600;
+}
+.tier-Sector-Leader { background: var(--gold-soft); color: var(--gold); }
+.tier-Competitive { background: var(--teal-soft); color: var(--teal); }
+.tier-Underperforming { background: var(--steel-soft); color: var(--steel); }
+.tier-Liability { background: var(--accent-soft); color: var(--accent); }
+.mi-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 0.06em; color: var(--muted);
+}
+.mi-Severe { color: var(--accent); font-weight: 600; }
+.mi-Moderate { color: var(--gold); }
+.mi-Positive { color: var(--teal); }
+.no-results {
+  padding: 60px; text-align: center;
+  background: white; color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.1em;
+}
+
+/* ─── REPORT ─── */
+#report { display: none; }
+
+/* STICKY NAV */
+.r-nav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--ink); height: 54px;
+  display: flex; align-items: center;
+  padding: 0 56px; gap: 20px;
+  border-bottom: 2px solid var(--accent);
+}
+.back-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45); text-transform: uppercase;
+  background: none; border: none; cursor: pointer;
+  transition: color 0.18s; display: flex; align-items: center; gap: 5px;
+}
+.back-btn:hover { color: white; }
+.nav-div { width: 1px; height: 18px; background: rgba(255,255,255,0.18); }
+.nav-oname {
+  font-size: 12px; font-weight: 700; color: white;
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.nav-ops-display {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px; color: var(--accent);
+}
+.nav-tabs { display: flex; }
+.nav-tab {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.42); text-transform: uppercase;
+  padding: 0 14px; height: 54px;
+  display: flex; align-items: center;
+  cursor: pointer; transition: all 0.18s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px; border-top: none;
+  background: none;
+}
+.nav-tab:hover, .nav-tab.active {
+  color: white; border-bottom-color: var(--accent);
+}
+
+/* REPORT HERO */
+.r-hero {
+  background: var(--ink); color: white;
+  padding: 48px 56px 40px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 40px; align-items: start;
+}
+.r-hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.38); text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.r-org-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(26px, 3.8vw, 42px);
+  line-height: 1.1; margin-bottom: 14px;
+}
+.r-meta-row {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px;
+}
+.r-meta-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.55); text-transform: uppercase;
+}
+.r-verdict {
+  font-size: 14px; line-height: 1.68;
+  color: rgba(255,255,255,0.65);
+  border-left: 2px solid var(--accent);
+  padding-left: 16px; font-style: italic;
+  max-width: 620px;
+}
+.ops-gauge {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px; min-width: 150px;
+}
+.ops-number {
+  font-family: 'DM Serif Display', serif;
+  font-size: 76px; line-height: 1; color: white;
+}
+.ops-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.38); text-transform: uppercase;
+}
+.presence-tier-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  padding: 5px 14px; text-transform: uppercase; font-weight: 600;
+}
+.ops-rank {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: rgba(255,255,255,0.38);
+  letter-spacing: 0.08em; text-align: center;
+}
+
+/* SCORECARD STRIP */
+.scorecard-strip {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  gap: 1px; background: var(--border);
+  border-bottom: 1px solid var(--border-strong);
+}
+.sc-cell {
+  background: white; padding: 22px 18px;
+  display: flex; flex-direction: column; gap: 5px;
+  position: relative; overflow: hidden;
+}
+.sc-accent-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+}
+.sc-dim {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.12em;
+  color: var(--muted); text-transform: uppercase;
+}
+.sc-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 38px; color: var(--ink); line-height: 1;
+}
+.sc-band {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.07em; color: var(--muted);
+}
+.sc-track {
+  height: 2px; background: var(--paper-dark); margin-top: 4px;
+}
+.sc-fill { height: 100%; }
+
+/* REPORT BODY */
+.r-body { padding: 0 56px 80px; }
+
+.r-section {
+  padding: 44px 0;
+  border-bottom: 1px solid var(--border);
+}
+.r-section:last-child { border-bottom: none; }
+
+.sec-hd {
+  display: flex; justify-content: space-between;
+  align-items: baseline; margin-bottom: 28px;
+  flex-wrap: wrap; gap: 10px;
+}
+.sec-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px; color: var(--ink);
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-n {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--accent); letter-spacing: 0.1em;
+}
+.sec-note {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--muted);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* LAYOUT HELPERS */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* CARD */
+.card {
+  background: white; border: 1px solid var(--border);
+  padding: 26px;
+}
+.card-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.15em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 18px;
+}
+canvas { max-width: 100%; }
+
+/* MISMATCH */
+.mismatch-banner {
+  padding: 26px 30px;
+  border-left: 4px solid; margin-bottom: 24px;
+}
+.mb-severe { border-color: var(--accent); background: var(--accent-soft); }
+.mb-moderate { border-color: var(--gold); background: var(--gold-soft); }
+.mb-acceptable { border-color: var(--steel); background: var(--steel-soft); }
+.mb-positive { border-color: var(--teal); background: var(--teal-soft); }
+
+.mb-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.mb-headline {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px; margin-bottom: 10px;
+}
+.mb-desc { font-size: 13px; line-height: 1.65; }
+
+/* FRAMEWORK CARDS */
+.fw-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--border);
+}
+.fw-card { background: white; padding: 26px; }
+.fw-icon { font-size: 22px; margin-bottom: 8px; }
+.fw-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.14em;
+  color: var(--muted); text-transform: uppercase; margin-bottom: 8px;
+}
+.fw-score {
+  font-family: 'DM Serif Display', serif;
+  font-size: 46px; line-height: 1; margin-bottom: 10px;
+}
+.fw-band {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--muted); letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.fw-desc { font-size: 12px; line-height: 1.65; color: var(--muted); }
+.fw-bar { height: 4px; background: var(--paper-dark); margin-top: 14px; }
+.fw-bar-fill { height: 100%; }
+
+/* PEER TABLE */
+.peer-tbl { width: 100%; border-collapse: collapse; }
+.peer-tbl th {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 9px 12px; text-align: left;
+  border-bottom: 2px solid var(--border-strong);
+  background: var(--paper-mid); white-space: nowrap;
+}
+.peer-tbl td {
+  font-size: 12.5px; padding: 11px 12px;
+  border-bottom: 1px solid var(--border); vertical-align: middle;
+}
+.peer-tbl tr.self { background: var(--ink); }
+.peer-tbl tr.self td { color: white; border-bottom-color: transparent; font-weight: 700; }
+.peer-tbl tr:not(.self):hover { background: var(--paper-mid); }
+.peer-rank-cell {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--muted); text-align: center;
+}
+tr.self .peer-rank-cell { color: rgba(255,255,255,0.5); }
+.peer-bar-cell { width: 100px; }
+.p-bar { height: 5px; background: var(--paper-dark); }
+.p-bar-fill { height: 100%; background: var(--accent); }
+tr.self .p-bar { background: rgba(255,255,255,0.18); }
+tr.self .p-bar-fill { background: var(--accent); }
+.tier-dot {
+  display: inline-block; width: 6px; height: 6px;
+  border-radius: 50%; margin-right: 6px; vertical-align: middle;
+}
+
+/* DISTRIBUTION */
+.dist-wrap {
+  background: white; border: 1px solid var(--border);
+  padding: 26px 28px 20px;
+}
+.dist-strip-outer {
+  height: 28px; position: relative; margin: 28px 0 8px;
+}
+.dist-strip {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 6px; background: var(--paper-dark);
+}
+.dist-dot {
+  position: absolute; bottom: -3px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--paper-dark); opacity: 0.5;
+  transform: translateX(-50%);
+  cursor: default;
+}
+.dist-dot.segment-DT { background: var(--steel); opacity: 0.55; }
+.dist-dot.segment-DSO { background: var(--muted); opacity: 0.45; }
+.dist-dot.is-self {
+  background: var(--accent); opacity: 1;
+  width: 10px; height: 10px; bottom: -5px;
+  box-shadow: 0 0 0 3px rgba(193,59,37,0.25);
+  z-index: 10;
+}
+.dist-self-label {
+  position: absolute; bottom: 12px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; color: var(--accent);
+  white-space: nowrap; font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.dist-self-line {
+  position: absolute; bottom: 6px; left: 50%;
+  width: 1px; height: 16px; background: var(--accent);
+}
+.dist-axis {
+  display: flex; justify-content: space-between;
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; color: var(--muted);
+  margin-top: 10px;
+}
+.dist-legend {
+  display: flex; gap: 20px; margin-top: 14px;
+  font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted);
+}
+.dist-legend-item { display: flex; align-items: center; gap: 6px; }
+.dist-legend-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+
+/* QUARTILE BOX */
+.quartile-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: var(--border); margin-top: 20px;
+}
+.q-cell {
+  background: white; padding: 16px 18px;
+  font-family: 'DM Mono', monospace;
+}
+.q-lbl { font-size: 8px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+.q-val { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--ink); }
+.q-sub { font-size: 8px; color: var(--muted); margin-top: 2px; }
+
+/* RATIONALE PANELS */
+.rat-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+}
+.rat-panel { background: white; padding: 26px; }
+.rat-dim {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+.rat-score-row {
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px;
+}
+.rat-score {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px; color: var(--ink);
+}
+.rat-band {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--muted);
+}
+.rat-text { font-size: 12.5px; line-height: 1.72; }
+
+/* PRIORITY GAP */
+.priority-block {
+  background: var(--ink); color: white;
+  padding: 34px 40px;
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 30px; align-items: center;
+}
+.priority-icon { font-size: 44px; color: var(--accent); }
+.priority-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.38); text-transform: uppercase; margin-bottom: 6px;
+}
+.priority-dim {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px; margin-bottom: 8px;
+}
+.priority-desc { font-size: 13.5px; line-height: 1.65; color: rgba(255,255,255,0.62); }
+
+/* ANALYST NOTE */
+.analyst-note {
+  background: var(--gold-soft); border: 1px solid var(--gold);
+  padding: 18px 22px; margin-bottom: 28px;
+}
+.an-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.15em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 6px;
+}
+.an-text { font-size: 12.5px; line-height: 1.65; }
+
+/* SCORING NOTES */
+.scoring-notes {
+  background: var(--paper-mid);
+  border-left: 3px solid var(--border-strong);
+  padding: 18px 22px; margin-top: 24px;
+}
+.sn-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.15em;
+  color: var(--muted); text-transform: uppercase; margin-bottom: 6px;
+}
+.sn-text { font-size: 12px; line-height: 1.72; color: var(--muted); }
+
+/* WORD CLOUD */
+.wc-wrap {
+  background: white; border: 1px solid var(--border);
+  padding: 26px; min-height: 160px;
+  display: flex; flex-wrap: wrap;
+  gap: 6px 10px; align-items: center; align-content: center;
+}
+.wc-word {
+  font-family: 'DM Serif Display', serif;
+  cursor: default; line-height: 1.3;
+  transition: color 0.18s; color: var(--ink);
+}
+.wc-word:hover { color: var(--accent); }
+
+/* ACTIONS */
+.r-actions {
+  display: flex; gap: 10px;
+  padding-top: 32px; margin-top: 44px;
+  border-top: 1px solid var(--border);
+}
+.act-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 11px 22px;
+  cursor: pointer; border: 1px solid var(--border-strong);
+  background: white; transition: all 0.18s;
+}
+.act-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
+.act-btn.primary {
+  background: var(--accent); color: white; border-color: var(--accent);
+}
+.act-btn.primary:hover { background: var(--ink); border-color: var(--ink); }
+
+/* FOOTER */
+.r-footer {
+  background: var(--ink); color: rgba(255,255,255,0.38);
+  padding: 28px 56px; font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.08em;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 860px) {
+  .two-col, .fw-grid, .rat-grid { grid-template-columns: 1fr; }
+  .three-col, .quartile-row { grid-template-columns: 1fr 1fr; }
+  .scorecard-strip { grid-template-columns: repeat(3,1fr); }
+  .r-hero { grid-template-columns: 1fr; }
+  .sector-stats, .landing-header, .landing-hero,
+  .selector-section, .r-nav, .r-hero, .r-body, .r-footer { padding-left: 24px; padding-right: 24px; }
+  .nav-tabs { display: none; }
+}
+
+@media print {
+  .r-nav, .r-actions { display: none !important; }
+  #landing { display: none !important; }
+  #report { display: block !important; }
+  .r-section { break-inside: avoid; }
+}
+
+/* ANIMATIONS */
+.fade-in { animation: fIn 0.35s ease both; }
+@keyframes fIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading">
+  <div class="loader-brand">DSO Digital Presence Audit</div>
+  <div class="loader-sub">Loading Intelligence Dataset</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<!-- ═══════════════ LANDING ═══════════════ -->
+<div id="landing">
+  <div class="landing-header">
+    <div class="brand-block">
+      <div class="brand-eyebrow">Confidential Intelligence Report</div>
+      <div class="brand-name">DSO Digital Presence Audit</div>
+      <div class="brand-tag">North America · Dental Technology · April 2026</div>
+    </div>
+    <div class="landing-meta" id="landingMeta"></div>
+  </div>
+
+  <div class="landing-hero">
+    <h1>The gap between what you <em>say</em> and what the market <em>experiences</em> — quantified.</h1>
+    <p>Every DSO and dental technology business of material scale in North America has been scored across five dimensions of digital presence. Select an organisation below to access its full forensic report, competitive benchmarking, and gap analysis.</p>
+  </div>
+
+  <div class="sector-stats" id="sectorStats"></div>
+
+  <div class="selector-section">
+    <div class="selector-controls">
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search organisations…" oninput="filterOrgs()">
+      </div>
+      <button class="filt active" id="fAll" onclick="setFilter('all',this)">All</button>
+      <button class="filt" id="fDSO" onclick="setFilter('DSO',this)">DSO</button>
+      <button class="filt" id="fDT" onclick="setFilter('Dental Technology',this)">Dental Technology</button>
+      <select class="sort-sel" onchange="setSort(this.value)">
+        <option value="ops_desc">OPS: High → Low</option>
+        <option value="ops_asc">OPS: Low → High</option>
+        <option value="name">A → Z</option>
+        <option value="mi_desc">Mismatch Index</option>
+        <option value="tier">Presence Tier</option>
+      </select>
+    </div>
+    <div id="orgGrid" class="org-grid"></div>
+    <div id="noResults" class="no-results" style="display:none">No organisations match your search.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ REPORT ═══════════════ -->
+<div id="report">
+  <!-- STICKY NAV -->
+  <nav class="r-nav">
+    <button class="back-btn" onclick="showLanding()">← All Organisations</button>
+    <div class="nav-div"></div>
+    <div class="nav-oname" id="navName"></div>
+    <div class="nav-ops-display" id="navOps"></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="scrollTo('s-overview')">Overview</button>
+      <button class="nav-tab" onclick="scrollTo('s-dimensions')">Dimensions</button>
+      <button class="nav-tab" onclick="scrollTo('s-mismatch')">Mismatch</button>
+      <button class="nav-tab" onclick="scrollTo('s-frameworks')">Frameworks</button>
+      <button class="nav-tab" onclick="scrollTo('s-benchmarks')">Benchmarks</button>
+      <button class="nav-tab" onclick="scrollTo('s-analysis')">Analysis</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="r-hero" id="rHero"></div>
+
+  <!-- SCORECARD STRIP -->
+  <div class="scorecard-strip" id="scorecardStrip"></div>
+
+  <!-- BODY -->
+  <div class="r-body">
+
+    <!-- §1 Sector Position -->
+    <div class="r-section" id="s-overview">
+      <div class="sec-hd">
+        <div class="sec-title"><span class="sec-n">§ 01</span> Sector Position</div>
+        <div class="sec-note">OPS Distribution · All 163 Organisations</div>
+      </div>
+      <div id="sectorPos"></div>
+    </div>
+
+    <!-- §2 Dimension Scores -->
+    <div class="r-section" id="s-dimensions">
+      <div class="sec-hd">
+        <div class="sec-title"><span class="sec-n">§ 02</span> Dimension Scores</div>
+        <div class="sec-note">Five Primary Dimensions · vs Segment Average</div>
+      </div>
+      <div id="dimSection"></div>
+    </div>
+
+    <!-- §3 Mismatch Analysis -->
+    <div class="r-section" id="s-mismatch">
+      <div class="sec-hd">
+        <div class="sec-title"><span class="sec-n">§ 03</span> Mismatch Analysis</div>
+        <div class="sec-note">Self-Presentation vs Market Perception</div>
+      </div>
+      <div id="mismatchSection"></div>
+    </div>
+
+    <!-- §4 Audience Frameworks -->
+    <div class="r-section" id="s-frameworks">
+      <div class="sec-hd">
+        <div class="sec-title"><span class="sec-n">§ 04</span> Audience Framework Scores</div>
+        <div class="sec-note">Patient &amp; Talent · Clinical Credibility · Investor &amp; PE</div>
+      </div>
+      <div id="frameworkSection"></div>
+    </div>
+
+    <!-- §5 Competitive Benchmarking -->
+    <div class="r-section" id="s-benchmarks">
+      <div class="sec-hd">
+        <div class="sec-title"><span class="sec-n">§ 05</span> Competitive Benchmarking</div>
+        <div class="sec-note" id="benchNote"></div>
+      </div>
+      <div id="benchmarkSection"></div>
+    </div>
+
+    <!-- §6 Dimension Analysis -->
+    <div class="r-section" id="s-analysis">
+      <div class="sec-hd">
+        <div class="sec-title"><span class="sec-n">§ 06</span> Dimension Analysis</div>
+        <div class="sec-note">Forensic Scoring Rationale</div>
+      </div>
+      <div id="analysisSection"></div>
+    </div>
+
+    <!-- §7 Priority Gap -->
+    <div class="r-section">
+      <div class="sec-hd">
+        <div class="sec-title"><span class="sec-n">§ 07</span> Priority Gap</div>
+        <div class="sec-note">Highest-Leverage Intervention Point</div>
+      </div>
+      <div id="prioritySection"></div>
+    </div>
+
+    <!-- §8 Signal Keywords -->
+    <div class="r-section">
+      <div class="sec-hd">
+        <div class="sec-title"><span class="sec-n">§ 08</span> Narrative Signal Map</div>
+        <div class="sec-note">Key Terms Extracted from Scoring Rationale</div>
+      </div>
+      <div id="wordcloudSection"></div>
+    </div>
+
+    <div class="r-actions">
+      <button class="act-btn primary" onclick="window.print()">Print / Save PDF</button>
+      <button class="act-btn" onclick="showLanding()">← Return to All Organisations</button>
+    </div>
+  </div><!-- /r-body -->
+
+  <div class="r-footer" id="rFooter"></div>
+</div><!-- /report -->
+
+<script>
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let ALL_ORGS = [];
+let META = {};
+let currentFilter = 'all';
+let currentSort = 'ops_desc';
+let currentOrg = null;
+let chartInstances = {};
+
+// ═══════════════════════════════════════════════
+// BOOT — load JSON
+// ═══════════════════════════════════════════════
+async function boot() {
+  try {
+    const resp = await fetch('dso_data.json');
+    if (!resp.ok) throw new Error('Cannot load dso_data.json');
+    const data = await resp.json();
+    ALL_ORGS = data.organisations;
+    META = data.meta;
+    init();
+  } catch(e) {
+    document.getElementById('loading').innerHTML =
+      `<div style="color:#c13b25;font-family:monospace;text-align:center;padding:40px">
+        <div style="font-size:18px;margin-bottom:12px">Data file not found</div>
+        <div style="font-size:12px;opacity:0.7">Ensure dso_data.json is in the same folder as this HTML file.</div>
+        <div style="font-size:11px;opacity:0.5;margin-top:8px">${e.message}</div>
+      </div>`;
+  }
+}
+
+function init() {
+  buildSectorStats();
+  renderGrid();
+  setTimeout(() => {
+    const l = document.getElementById('loading');
+    l.classList.add('hidden');
+    setTimeout(() => l.remove(), 500);
+  }, 900);
+}
+
+// ═══════════════════════════════════════════════
+// LANDING
+// ═══════════════════════════════════════════════
+function buildSectorStats() {
+  document.getElementById('landingMeta').innerHTML =
+    `Audit Date: ${META.audit_date}<br>Organisations Scored: ${META.total}<br>Methodology: ${META.methodology_version}`;
+
+  const tierOrder = ['Sector Leader','Competitive','Underperforming','Liability'];
+  const stats = [
+    { n: META.total, l: 'Organisations Scored' },
+    { n: META.dso_count, l: 'DSOs' },
+    { n: META.dt_count, l: 'Dental Technology' },
+    { n: fmt1(META.avg_ops), l: 'Sector Avg OPS' },
+    { n: fmt1(META.dso_avg_ops), l: 'DSO Avg OPS' },
+    { n: fmt1(META.dt_avg_ops), l: 'DenTech Avg OPS' },
+    { n: META.sector_leader_count, l: 'Sector Leaders' },
+    { n: META.competitive_count, l: 'Competitive' },
+    { n: META.severe_mismatch_count, l: 'Severe Mismatch' },
+    { n: META.liability_count, l: 'Liability Tier' },
+  ];
+  document.getElementById('sectorStats').innerHTML =
+    stats.map(s => `<div class="stat-cell"><div class="stat-n">${s.n}</div><div class="stat-l">${s.l}</div></div>`).join('');
+}
+
+function filterOrgs() { renderGrid(); }
+
+function setFilter(val, btn) {
+  currentFilter = val;
+  document.querySelectorAll('.filt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+}
+
+function setSort(val) {
+  currentSort = val;
+  renderGrid();
+}
+
+function getFilteredSorted() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  let orgs = ALL_ORGS.filter(o => {
+    if (currentFilter !== 'all' && o.segment !== currentFilter) return false;
+    if (q && !o.name.toLowerCase().includes(q) && !o.id.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const tierOrder = { 'Sector Leader': 0, 'Competitive': 1, 'Underperforming': 2, 'Liability': 3 };
+  switch(currentSort) {
+    case 'ops_desc': orgs.sort((a,b) => b.ops - a.ops); break;
+    case 'ops_asc': orgs.sort((a,b) => a.ops - b.ops); break;
+    case 'name': orgs.sort((a,b) => a.name.localeCompare(b.name)); break;
+    case 'mi_desc': orgs.sort((a,b) => (b.mi||0) - (a.mi||0)); break;
+    case 'tier': orgs.sort((a,b) => (tierOrder[a.presence_tier]||99) - (tierOrder[b.presence_tier]||99)); break;
+  }
+  return orgs;
+}
+
+function renderGrid() {
+  const orgs = getFilteredSorted();
+  const grid = document.getElementById('orgGrid');
+  const noR = document.getElementById('noResults');
+  if (!orgs.length) {
+    grid.innerHTML = '';
+    noR.style.display = 'block';
+    return;
+  }
+  noR.style.display = 'none';
+  const tierClass = t => 'tier-' + (t || '').replace(/\s+/g, '-');
+  const miClass = b => b.startsWith('Severe') ? 'mi-Severe' : b.startsWith('Moderate') ? 'mi-Moderate' : b.startsWith('Positive') ? 'mi-Positive' : '';
+  grid.innerHTML = orgs.map(o => `
+    <div class="org-card" onclick="openReport('${o.id}')">
+      <div class="org-card-top">
+        <div class="org-name">${o.name}</div>
+        <div class="org-id">${o.id}</div>
+      </div>
+      <div class="org-card-middle">
+        <div>
+          <div class="ops-big-sm">${fmt1(o.ops)}</div>
+          <div class="ops-lbl">OPS</div>
+        </div>
+        <div class="org-bar-track" style="flex:1">
+          <div class="org-bar-fill" style="width:${(o.ops/10*100).toFixed(1)}%"></div>
+        </div>
+      </div>
+      <div class="org-card-bottom">
+        <span class="tier-badge ${tierClass(o.presence_tier)}">${o.presence_tier}</span>
+        <span class="mi-chip ${miClass(o.mi_band)}">${o.mi_band}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════
+// REPORT
+// ═══════════════════════════════════════════════
+function openReport(id) {
+  currentOrg = ALL_ORGS.find(o => o.id === id);
+  if (!currentOrg) return;
+  destroyCharts();
+  document.getElementById('landing').style.display = 'none';
+  const rpt = document.getElementById('report');
+  rpt.style.display = 'block';
+  window.scrollTo(0,0);
+  buildReport(currentOrg);
+}
+
+function showLanding() {
+  destroyCharts();
+  document.getElementById('report').style.display = 'none';
+  document.getElementById('landing').style.display = 'flex';
+}
+
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function destroyCharts() {
+  Object.values(chartInstances).forEach(c => { try { c.destroy(); } catch(e){} });
+  chartInstances = {};
+}
+
+// ─── SCORE COLOR ───
+function scoreColor(s) {
+  if (s === null || s === undefined) return '#ccc';
+  if (s >= 9) return '#1e6b5c';
+  if (s >= 7) return '#2a7a55';
+  if (s >= 5) return '#b08830';
+  if (s >= 3) return '#c13b25';
+  return '#8b1a1a';
+}
+
+function fwColor(s) {
+  if (s >= 7) return '#1e6b5c';
+  if (s >= 5) return '#b08830';
+  return '#c13b25';
+}
+
+function fmt1(v) { return v != null ? parseFloat(v).toFixed(1) : '—'; }
+function fmt2(v) { return v != null ? parseFloat(v).toFixed(2) : '—'; }
+
+function bandLabel(b) {
+  const m = { 'Dominant':'Dominant','Strong':'Strong','Present':'Present','Weak':'Weak','Absent':'Absent' };
+  return m[b] || b;
+}
+
+function segOrgs(seg) {
+  return ALL_ORGS.filter(o => o.segment === seg && o.ops != null);
+}
+
+function avgDim(orgs, key) {
+  const vals = orgs.map(o => o[key]).filter(v => v != null);
+  return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
+}
+
+function rankInSeg(org) {
+  const seg = segOrgs(org.segment).sort((a,b) => b.ops - a.ops);
+  return seg.findIndex(o => o.id === org.id) + 1;
+}
+
+function rankInAll(org) {
+  const all = [...ALL_ORGS].filter(o => o.ops != null).sort((a,b) => b.ops - a.ops);
+  return all.findIndex(o => o.id === org.id) + 1;
+}
+
+function miBandClass(b) {
+  if (!b) return 'mb-acceptable';
+  if (b.includes('Severe')) return 'mb-severe';
+  if (b.includes('Moderate')) return 'mb-moderate';
+  if (b.includes('Positive')) return 'mb-positive';
+  return 'mb-acceptable';
+}
+
+function miBandDesc(o) {
+  const mi = o.mi || 0;
+  const b = o.mi_band || '';
+  if (b.includes('Severe'))
+    return `A mismatch of <strong>${fmt2(mi)}</strong> places this organisation in the Severe band — the self-presentation story is materially ahead of what the market records. Every touchpoint where a prospective patient, clinician, or investor can compare the two creates an opportunity for a competitor with a smaller gap to gain ground.`;
+  if (b.includes('Moderate'))
+    return `A mismatch of <strong>${fmt2(mi)}</strong> falls in the Moderate band. The self-presentation is somewhat ahead of market-recorded experience. The gap is actionable and, if closed, would produce a compound benefit across both OPS and competitive position.`;
+  if (b.includes('Positive'))
+    return `The Mismatch Index of <strong>${fmt2(mi)}</strong> is a Positive Signal — market perception is broadly in line with or slightly ahead of self-presentation. This is a structurally strong position: the organisation is delivering against what it claims, which builds trust compound over time.`;
+  return `A mismatch of <strong>${fmt2(mi)}</strong> falls in the Acceptable range. Self-presentation and market perception are broadly aligned. The audit identifies no structural mismatch requiring urgent intervention, though targeted improvements remain available.`;
+}
+
+function tierClass(t) {
+  return 'tier-' + (t||'').replace(/\s+/g,'-');
+}
+
+function tierColor(t) {
+  if (t === 'Sector Leader') return '#b08830';
+  if (t === 'Competitive') return '#1e6b5c';
+  if (t === 'Underperforming') return '#3a4a5c';
+  return '#c13b25';
+}
+
+function verdictText(o) {
+  const segs = o.segment === 'DSO' ? 'DSO sector' : 'dental technology market';
+  const tier = o.presence_tier;
+  const d = {
+    d1: o.d1, d2: o.d2, d3: o.d3, d4: o.d4, d5: o.d5
+  };
+  const dims = ['d1','d2','d3','d4','d5'];
+  const strongest = dims.sort((a,b) => (d[b]||0)-(d[a]||0))[0];
+  const weakest = dims.sort((a,b) => (d[a]||0)-(d[b]||0))[0];
+  const dimNames = { d1:'Discoverability', d2:'Credibility Signal', d3:'Identity Coherence', d4:'Market Voice', d5:'Competitive Delta' };
+
+  if (tier === 'Sector Leader')
+    return `A Sector Leader in the ${segs}. Strongest performance is in ${dimNames[strongest]} and the overall presence is a benchmark for competitive peers. The priority is maintenance and compounding of existing advantages.`;
+  if (tier === 'Competitive')
+    return `A Competitive position in the ${segs}, with OPS of ${fmt1(o.ops)}. The strongest dimension is ${dimNames[strongest]}. The primary opportunity for improvement lies in ${dimNames[weakest]}, where targeted investment would compound across the scoring framework.`;
+  if (tier === 'Underperforming')
+    return `Currently Underperforming relative to the ${segs} median. The organisation shows strength in ${dimNames[strongest]} but the ${dimNames[weakest]} dimension represents a material gap. A structured intervention programme would be expected to move the presence tier within 12 months.`;
+  return `A Liability-tier presence in the ${segs}. The current digital footprint represents an active risk in competitive patient, talent, and capital acquisition contexts. Priority intervention is warranted, beginning with ${dimNames[weakest]}.`;
+}
+
+// ═══════════════════════════════════════════════
+// BUILD REPORT
+// ═══════════════════════════════════════════════
+function buildReport(o) {
+  const seg = segOrgs(o.segment);
+  const rankSeg = rankInSeg(o);
+  const rankAll = rankInAll(o);
+
+  // NAV
+  document.getElementById('navName').textContent = o.name;
+  document.getElementById('navOps').textContent = fmt1(o.ops);
+
+  // HERO
+  document.getElementById('rHero').innerHTML = `
+    <div class="fade-in">
+      <div class="r-hero-eyebrow">${o.segment} · ${o.id} · Audited ${o.audit_date}</div>
+      <div class="r-org-name">${o.name}</div>
+      <div class="r-meta-row">
+        <span class="r-meta-pill">${o.segment}</span>
+        <span class="r-meta-pill">Audit: ${o.audit_date}</span>
+        <span class="r-meta-pill">MI Band: ${o.mi_band}</span>
+        <span class="r-meta-pill">Priority: ${o.priority_gap}</span>
+      </div>
+      <div class="r-verdict">${verdictText(o)}</div>
+    </div>
+    <div class="ops-gauge fade-in">
+      <div class="ops-number">${fmt1(o.ops)}</div>
+      <div class="ops-label">Overall Presence Score</div>
+      <span class="presence-tier-badge ${tierClass(o.presence_tier)}" style="background:${tierColor(o.presence_tier)}22;color:${tierColor(o.presence_tier)}">${o.presence_tier}</span>
+      <div class="ops-rank">#${rankSeg} in ${o.segment} · #${rankAll} overall</div>
+    </div>
+  `;
+
+  // SCORECARD STRIP
+  const dims = [
+    { key:'d1', label:'D1 Discoverability', weight:'20%' },
+    { key:'d2', label:'D2 Credibility Signal', weight:'25%' },
+    { key:'d3', label:'D3 Identity Coherence', weight:'15%' },
+    { key:'d4', label:'D4 Market Voice', weight:'25%' },
+    { key:'d5', label:'D5 Competitive Delta', weight:'15%' },
+  ];
+  document.getElementById('scorecardStrip').innerHTML = dims.map(d => {
+    const val = o[d.key];
+    const col = scoreColor(val);
+    const pct = val != null ? (val/10*100).toFixed(1) : 0;
+    const bnd = o[d.key + '_band'] || '';
+    return `
+      <div class="sc-cell">
+        <div class="sc-dim">${d.label}</div>
+        <div class="sc-val">${fmt1(val)}</div>
+        <div class="sc-band">${bnd} · wt ${d.weight}</div>
+        <div class="sc-track"><div class="sc-fill" style="width:${pct}%;background:${col}"></div></div>
+        <div class="sc-accent-bar" style="background:${col};opacity:0.15;width:${pct}%"></div>
+      </div>
+    `;
+  }).join('');
+
+  // §1 SECTOR POSITION
+  buildSectorPosition(o);
+
+  // §2 DIMENSIONS
+  buildDimensions(o, seg);
+
+  // §3 MISMATCH
+  buildMismatch(o);
+
+  // §4 FRAMEWORKS
+  buildFrameworks(o, seg);
+
+  // §5 BENCHMARKS
+  buildBenchmarks(o, seg);
+
+  // §6 ANALYSIS
+  buildAnalysis(o);
+
+  // §7 PRIORITY GAP
+  buildPriority(o);
+
+  // §8 WORD CLOUD
+  buildWordCloud(o);
+
+  // FOOTER
+  document.getElementById('rFooter').innerHTML = `
+    <div>DSO Digital Presence Audit · Confidential · ${META.audit_date}</div>
+    <div>${o.name} · ${o.id}</div>
+    <div>Methodology: ${META.methodology_version}</div>
+  `;
+}
+
+// ─── §1 SECTOR POSITION ───
+function buildSectorPosition(o) {
+  const all = ALL_ORGS.filter(x => x.ops != null);
+  const ops_vals = all.map(x => x.ops);
+  const min_ops = Math.min(...ops_vals);
+  const max_ops = Math.max(...ops_vals);
+
+  // Distribution strip
+  let dots = all.map(x => {
+    const pct = ((x.ops - min_ops) / (max_ops - min_ops) * 100).toFixed(2);
+    const isSelf = x.id === o.id;
+    const segCls = x.segment === 'Dental Technology' ? 'segment-DT' : 'segment-DSO';
+    return `<div class="dist-dot ${segCls} ${isSelf ? 'is-self' : ''}"
+      style="left:${pct}%"
+      title="${x.name}: ${fmt1(x.ops)}">
+      ${isSelf ? `<div class="dist-self-line"></div><div class="dist-self-label">${fmt1(o.ops)}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  // Percentile
+  const below = all.filter(x => x.ops < o.ops).length;
+  const pctile = Math.round(below / all.length * 100);
+
+  // Segment stats
+  const seg = segOrgs(o.segment);
+  const seg_avg = avgDim(seg, 'ops');
+  const seg_max = Math.max(...seg.map(x => x.ops));
+  const seg_min = Math.min(...seg.map(x => x.ops));
+  const seg_vals = seg.map(x => x.ops).sort((a,b) => a-b);
+  const seg_median = seg_vals[Math.floor(seg_vals.length/2)];
+
+  document.getElementById('sectorPos').innerHTML = `
+    <div class="dist-wrap">
+      <div class="card-title">OPS Distribution — All 163 Organisations</div>
+      <div class="dist-strip-outer">
+        <div class="dist-strip">${dots}</div>
+      </div>
+      <div class="dist-axis">
+        <span>${fmt1(min_ops)} — Lowest</span>
+        <span>← DSO &nbsp; | &nbsp; Dental Technology →</span>
+        <span>Highest — ${fmt1(max_ops)}</span>
+      </div>
+      <div class="dist-legend">
+        <div class="dist-legend-item"><div class="dist-legend-dot" style="background:#7a7a8c;opacity:0.6"></div>DSO</div>
+        <div class="dist-legend-item"><div class="dist-legend-dot" style="background:#3a4a5c;opacity:0.7"></div>Dental Technology</div>
+        <div class="dist-legend-item"><div class="dist-legend-dot" style="background:#c13b25"></div>${o.name}</div>
+      </div>
+    </div>
+    <div class="quartile-row">
+      <div class="q-cell">
+        <div class="q-lbl">This Organisation</div>
+        <div class="q-val">${fmt1(o.ops)}</div>
+        <div class="q-sub">Overall Presence Score</div>
+      </div>
+      <div class="q-cell">
+        <div class="q-lbl">Sector Percentile</div>
+        <div class="q-val">${pctile}<span style="font-size:14px;font-family:Syne">th</span></div>
+        <div class="q-sub">vs all 163 organisations</div>
+      </div>
+      <div class="q-cell">
+        <div class="q-lbl">${o.segment} Average</div>
+        <div class="q-val">${fmt1(seg_avg)}</div>
+        <div class="q-sub">Δ ${(o.ops - seg_avg >= 0 ? '+' : '')}${fmt1(o.ops - seg_avg)} vs avg</div>
+      </div>
+      <div class="q-cell">
+        <div class="q-lbl">${o.segment} Median</div>
+        <div class="q-val">${fmt1(seg_median)}</div>
+        <div class="q-sub">Δ ${(o.ops - seg_median >= 0 ? '+' : '')}${fmt1(o.ops - seg_median)} vs median</div>
+      </div>
+    </div>
+  `;
+}
+
+// ─── §2 DIMENSIONS ───
+function buildDimensions(o, seg) {
+  const dims = [
+    { key:'d1', label:'D1 — Discoverability', weight: 0.20,
+      desc:'Can the right audiences find this organisation when actively searching? Covers SEO, local presence, and key platform visibility.' },
+    { key:'d2', label:'D2 — Credibility Signal', weight: 0.25,
+      desc:'When found, does the evidence — clinical expertise, outcomes, accreditations, content — support the claims being made?' },
+    { key:'d3', label:'D3 — Identity Coherence', weight: 0.15,
+      desc:'Does the organisation present a single, consistent story across all digital touchpoints, or does the message fracture by channel?' },
+    { key:'d4', label:'D4 — Market Voice', weight: 0.25,
+      desc:'What does the market record when the organisation is not speaking? Reviews, employee sentiment, press tone, third-party signals.' },
+    { key:'d5', label:'D5 — Competitive Delta', weight: 0.15,
+      desc:'Relative to direct competitors for the same patients, clinicians, and capital: is this organisation gaining or losing ground digitally?' },
+  ];
+
+  const segAvgs = {};
+  dims.forEach(d => { segAvgs[d.key] = avgDim(seg, d.key); });
+
+  // Radar chart
+  const radarCanvas = document.createElement('canvas');
+  radarCanvas.id = 'radarChart';
+  radarCanvas.height = 320;
+
+  // Bar chart
+  const barCanvas = document.createElement('canvas');
+  barCanvas.id = 'barChart';
+  barCanvas.height = 260;
+
+  document.getElementById('dimSection').innerHTML = `
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Radar — Five Dimensions vs Segment Average</div>
+        <canvas id="radarChart" height="300"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Bar Chart — Scored vs Average (Weighted)</div>
+        <canvas id="barChart" height="300"></canvas>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border)">
+      ${dims.map(d => `
+        <div style="background:white;padding:18px 16px">
+          <div style="font-family:DM Mono,monospace;font-size:8px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">${d.label}</div>
+          <div style="font-family:DM Serif Display,serif;font-size:28px;color:${scoreColor(o[d.key])};line-height:1">${fmt1(o[d.key])}</div>
+          <div style="font-family:DM Mono,monospace;font-size:8px;color:var(--muted);margin:4px 0">Seg avg: ${fmt1(segAvgs[d.key])}</div>
+          <div style="height:3px;background:var(--paper-dark);margin-top:6px">
+            <div style="height:100%;width:${(o[d.key]/10*100)}%;background:${scoreColor(o[d.key])}"></div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px">${d.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  // Render radar
+  requestAnimationFrame(() => {
+    const rc = document.getElementById('radarChart');
+    if (rc) {
+      chartInstances['radar'] = new Chart(rc, {
+        type: 'radar',
+        data: {
+          labels: ['Discoverability\n(D1)', 'Credibility\n(D2)', 'Identity\n(D3)', 'Market Voice\n(D4)', 'Competitive\n(D5)'],
+          datasets: [
+            {
+              label: o.name.length > 30 ? o.name.substring(0,30)+'…' : o.name,
+              data: [o.d1, o.d2, o.d3, o.d4, o.d5],
+              backgroundColor: 'rgba(193,59,37,0.12)',
+              borderColor: '#c13b25',
+              borderWidth: 2,
+              pointBackgroundColor: '#c13b25',
+              pointRadius: 4,
+            },
+            {
+              label: `${o.segment} Average`,
+              data: dims.map(d => segAvgs[d.key]),
+              backgroundColor: 'rgba(58,74,92,0.08)',
+              borderColor: 'rgba(58,74,92,0.5)',
+              borderWidth: 1.5,
+              borderDash: [4,3],
+              pointBackgroundColor: 'rgba(58,74,92,0.5)',
+              pointRadius: 3,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              min: 0, max: 10,
+              ticks: { stepSize: 2, font: { family: 'DM Mono', size: 9 }, color: '#7a7a8c' },
+              grid: { color: 'rgba(0,0,0,0.07)' },
+              pointLabels: { font: { family: 'Syne', size: 11, weight: '600' }, color: '#0d0d12' },
+            }
+          },
+          plugins: {
+            legend: { labels: { font: { family: 'Syne', size: 11 }, color: '#2a2a35', boxWidth: 12 } }
+          }
+        }
+      });
+    }
+
+    const bc = document.getElementById('barChart');
+    if (bc) {
+      chartInstances['bar'] = new Chart(bc, {
+        type: 'bar',
+        data: {
+          labels: ['D1', 'D2', 'D3', 'D4', 'D5'],
+          datasets: [
+            {
+              label: o.name.length > 28 ? o.name.substring(0,28)+'…' : o.name,
+              data: [o.d1, o.d2, o.d3, o.d4, o.d5],
+              backgroundColor: [o.d1,o.d2,o.d3,o.d4,o.d5].map(v => scoreColor(v) + 'cc'),
+              borderColor: [o.d1,o.d2,o.d3,o.d4,o.d5].map(v => scoreColor(v)),
+              borderWidth: 1.5,
+              borderRadius: 2,
+            },
+            {
+              label: `${o.segment} Average`,
+              data: dims.map(d => segAvgs[d.key]),
+              backgroundColor: 'rgba(58,74,92,0.18)',
+              borderColor: 'rgba(58,74,92,0.5)',
+              borderWidth: 1.5,
+              borderRadius: 2,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              min: 0, max: 10,
+              ticks: { stepSize: 2, font: { family: 'DM Mono', size: 10 }, color: '#7a7a8c' },
+              grid: { color: 'rgba(0,0,0,0.06)' },
+            },
+            x: {
+              ticks: { font: { family: 'DM Mono', size: 11, weight: '600' }, color: '#0d0d12' },
+              grid: { display: false },
+            }
+          },
+          plugins: {
+            legend: { labels: { font: { family: 'Syne', size: 11 }, color: '#2a2a35', boxWidth: 12 } }
+          }
+        }
+      });
+    }
+  });
+}
+
+// ─── §3 MISMATCH ───
+function buildMismatch(o) {
+  const miColor = b => {
+    if (b.includes('Severe')) return '#c13b25';
+    if (b.includes('Moderate')) return '#b08830';
+    if (b.includes('Positive')) return '#1e6b5c';
+    return '#3a4a5c';
+  };
+
+  const sp = o.self_pres || 0;
+  const mp = o.market_perc || 0;
+  const mi = o.mi || 0;
+
+  document.getElementById('mismatchSection').innerHTML = `
+    <div class="mismatch-banner ${miBandClass(o.mi_band)}">
+      <div class="mb-label" style="color:${miColor(o.mi_band)}">${o.mi_band} — Mismatch Index: ${fmt2(mi)}</div>
+      <div class="mb-headline">Self-Presentation ${fmt1(sp)} → Market Perception ${fmt1(mp)}</div>
+      <div class="mb-desc">${miBandDesc(o)}</div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Self-Presentation vs Market Perception</div>
+        <canvas id="miBarChart" height="180"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Mismatch Context — Sector Distribution</div>
+        <canvas id="miSectorChart" height="180"></canvas>
+      </div>
+    </div>
+  `;
+
+  requestAnimationFrame(() => {
+    const c1 = document.getElementById('miBarChart');
+    if (c1) {
+      chartInstances['miBar'] = new Chart(c1, {
+        type: 'bar',
+        data: {
+          labels: ['Self-Presentation', 'Market Perception', 'Mismatch Index'],
+          datasets: [{
+            data: [sp, mp, mi],
+            backgroundColor: ['rgba(58,74,92,0.6)', '#c13b2544', miColor(o.mi_band) + '88'],
+            borderColor: ['#3a4a5c', '#c13b25', miColor(o.mi_band)],
+            borderWidth: 1.5, borderRadius: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: {
+              min: 0, max: Math.max(10, sp + 1),
+              ticks: { font: { family: 'DM Mono', size: 10 }, color: '#7a7a8c' },
+              grid: { color: 'rgba(0,0,0,0.06)' },
+            },
+            x: { ticks: { font: { family: 'Syne', size: 11, weight:'600' }, color: '#0d0d12' }, grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // MI sector distribution — doughnut of bands
+    const bands = { 'Severe Mismatch': 0, 'Moderate Mismatch': 0, 'Acceptable': 0, 'Positive Signal': 0 };
+    ALL_ORGS.filter(x => x.segment === o.segment).forEach(x => {
+      if (bands.hasOwnProperty(x.mi_band)) bands[x.mi_band]++;
+    });
+    const c2 = document.getElementById('miSectorChart');
+    if (c2) {
+      chartInstances['miSector'] = new Chart(c2, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(bands),
+          datasets: [{
+            data: Object.values(bands),
+            backgroundColor: ['#c13b2588','#b0883088','#3a4a5c44','#1e6b5c44'],
+            borderColor: ['#c13b25','#b08830','#3a4a5c','#1e6b5c'],
+            borderWidth: 1.5,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { font: { family: 'Syne', size: 11 }, color: '#2a2a35', boxWidth: 12 } },
+            tooltip: {
+              callbacks: {
+                label: ctx => ` ${ctx.label}: ${ctx.parsed} organisations`
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+}
+
+// ─── §4 FRAMEWORKS ───
+function buildFrameworks(o, seg) {
+  const fws = [
+    { key:'f1', icon:'🏥', label:'Patient & Talent', weight:'F1',
+      desc:'How this organisation\'s digital presence performs for patient acquisition and clinical talent attraction. Draws primarily from D1, D2, and D4.' },
+    { key:'f2', icon:'⚕️', label:'Clinical Credibility', weight:'F2',
+      desc:'The strength of the clinical evidence infrastructure as assessed by clinical peers, partners, and healthcare investors. Draws primarily from D2 and D3.' },
+    { key:'f3', icon:'📊', label:'Investor & PE', weight:'F3',
+      desc:'How the digital presence reads to institutional investors and private equity performing due diligence. Draws primarily from D2, D3, and D4.' },
+  ];
+
+  const segAvgs = {};
+  fws.forEach(f => { segAvgs[f.key] = avgDim(seg, f.key); });
+
+  const fwHtml = fws.map(f => {
+    const val = o[f.key];
+    const col = fwColor(val);
+    const avg = segAvgs[f.key];
+    const delta = val - avg;
+    const pct = (val/10*100).toFixed(1);
+    const bnd = val >= 7 ? 'Strong' : val >= 5 ? 'Present' : val >= 3 ? 'Weak' : 'Absent';
+    return `
+      <div class="fw-card">
+        <div class="fw-icon">${f.icon}</div>
+        <div class="fw-lbl">${f.label}</div>
+        <div class="fw-score" style="color:${col}">${fmt2(val)}</div>
+        <div class="fw-band">${bnd} · ${o.segment} avg: ${fmt2(avg)} (Δ ${delta >= 0 ? '+' : ''}${fmt2(delta)})</div>
+        <div class="fw-desc">${f.desc}</div>
+        <div class="fw-bar"><div class="fw-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('frameworkSection').innerHTML = `
+    <div class="fw-grid">${fwHtml}</div>
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">Framework Score Comparison — vs Segment Average</div>
+      <canvas id="fwChart" height="200"></canvas>
+    </div>
+  `;
+
+  requestAnimationFrame(() => {
+    const c = document.getElementById('fwChart');
+    if (c) {
+      chartInstances['fw'] = new Chart(c, {
+        type: 'bar',
+        data: {
+          labels: ['F1 Patient & Talent', 'F2 Clinical Credibility', 'F3 Investor & PE'],
+          datasets: [
+            {
+              label: o.name.length > 28 ? o.name.substring(0,28)+'…' : o.name,
+              data: [o.f1, o.f2, o.f3],
+              backgroundColor: [o.f1, o.f2, o.f3].map(v => fwColor(v) + 'bb'),
+              borderColor: [o.f1, o.f2, o.f3].map(v => fwColor(v)),
+              borderWidth: 1.5, borderRadius: 2,
+            },
+            {
+              label: `${o.segment} Average`,
+              data: fws.map(f => segAvgs[f.key]),
+              backgroundColor: 'rgba(58,74,92,0.18)',
+              borderColor: 'rgba(58,74,92,0.5)',
+              borderWidth: 1.5, borderRadius: 2,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              min: 0, max: 10,
+              ticks: { font: { family: 'DM Mono', size: 10 }, color: '#7a7a8c' },
+              grid: { color: 'rgba(0,0,0,0.06)' },
+            },
+            x: { ticks: { font: { family: 'Syne', size: 11, weight:'600' }, color: '#0d0d12' }, grid: { display: false } }
+          },
+          plugins: { legend: { labels: { font: { family: 'Syne', size: 11 }, color: '#2a2a35', boxWidth: 12 } } }
+        }
+      });
+    }
+  });
+}
+
+// ─── §5 BENCHMARKS ───
+function buildBenchmarks(o, seg) {
+  document.getElementById('benchNote').textContent = `${o.segment} · Ranked by OPS`;
+
+  // Pick peers: closest OPS within segment (up to 9 others + self)
+  const sorted = [...seg].sort((a,b) => b.ops - a.ops);
+  const selfIdx = sorted.findIndex(x => x.id === o.id);
+
+  // Show top 5 + 2 above/below org if not in top 5
+  let peers;
+  if (selfIdx < 10) {
+    peers = sorted.slice(0, Math.max(10, selfIdx + 3));
+  } else {
+    peers = [
+      ...sorted.slice(0, 5),
+      ...sorted.slice(Math.max(5, selfIdx - 2), selfIdx + 3),
+    ];
+    // dedupe
+    const seen = new Set();
+    peers = peers.filter(p => { if (seen.has(p.id)) return false; seen.add(p.id); return true; });
+  }
+
+  const tierDot = t => {
+    const c = tierColor(t);
+    return `<span class="tier-dot" style="background:${c}"></span>`;
+  };
+
+  const tableRows = peers.map((p, i) => {
+    const rankN = sorted.findIndex(x => x.id === p.id) + 1;
+    const isSelf = p.id === o.id;
+    const pct = (p.ops/10*100).toFixed(1);
+    return `
+      <tr ${isSelf ? 'class="self"' : ''}>
+        <td class="peer-rank-cell">${rankN}</td>
+        <td>${tierDot(p.presence_tier)}<strong>${p.name.length > 40 ? p.name.substring(0,38)+'…' : p.name}</strong> ${isSelf ? '<em style="font-size:10px;opacity:0.6"> ← this organisation</em>' : ''}</td>
+        <td style="font-family:DM Serif Display,serif;font-size:18px;text-align:center">${fmt1(p.ops)}</td>
+        <td style="text-align:center">${fmt1(p.d1)}</td>
+        <td style="text-align:center">${fmt1(p.d2)}</td>
+        <td style="text-align:center">${fmt1(p.d3)}</td>
+        <td style="text-align:center">${fmt1(p.d4)}</td>
+        <td style="text-align:center">${fmt1(p.d5)}</td>
+        <td class="peer-bar-cell"><div class="p-bar"><div class="p-bar-fill" style="width:${pct}%"></div></div></td>
+        <td><span class="tier-badge ${tierClass(p.presence_tier)}" style="background:${tierColor(p.presence_tier)}22;color:${tierColor(p.presence_tier)}">${p.presence_tier}</span></td>
+      </tr>
+    `;
+  }).join('');
+
+  document.getElementById('benchmarkSection').innerHTML = `
+    <div style="overflow-x:auto;background:white;border:1px solid var(--border)">
+      <table class="peer-tbl">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Organisation</th>
+            <th style="text-align:center">OPS</th>
+            <th style="text-align:center">D1</th>
+            <th style="text-align:center">D2</th>
+            <th style="text-align:center">D3</th>
+            <th style="text-align:center">D4</th>
+            <th style="text-align:center">D5</th>
+            <th style="width:100px">OPS Bar</th>
+            <th>Tier</th>
+          </tr>
+        </thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">Dimension Comparison — This Organisation vs Top 5 in Segment</div>
+      <canvas id="peerRadar" height="280"></canvas>
+    </div>
+  `;
+
+  // Peer radar — top 5 + self
+  const topFive = sorted.slice(0, 5);
+  const peersForRadar = topFive.find(p => p.id === o.id) ? topFive : [o, ...topFive.slice(0,4)];
+
+  const palette = ['#c13b25','#1e6b5c','#b08830','#3a4a5c','#8b4513'];
+
+  requestAnimationFrame(() => {
+    const c = document.getElementById('peerRadar');
+    if (c) {
+      chartInstances['peerRadar'] = new Chart(c, {
+        type: 'radar',
+        data: {
+          labels: ['D1 Discoverability', 'D2 Credibility', 'D3 Identity', 'D4 Market Voice', 'D5 Competitive'],
+          datasets: peersForRadar.map((p, i) => ({
+            label: p.name.length > 28 ? p.name.substring(0,26)+'…' : p.name,
+            data: [p.d1, p.d2, p.d3, p.d4, p.d5],
+            backgroundColor: p.id === o.id ? 'rgba(193,59,37,0.12)' : 'transparent',
+            borderColor: p.id === o.id ? '#c13b25' : palette[i % palette.length] + '88',
+            borderWidth: p.id === o.id ? 2.5 : 1.2,
+            pointBackgroundColor: p.id === o.id ? '#c13b25' : palette[i % palette.length] + 'aa',
+            pointRadius: p.id === o.id ? 4 : 2.5,
+          }))
+        },
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              min: 0, max: 10,
+              ticks: { stepSize: 2, font: { family: 'DM Mono', size: 9 }, color: '#7a7a8c' },
+              grid: { color: 'rgba(0,0,0,0.06)' },
+              pointLabels: { font: { family: 'Syne', size: 11, weight:'600' }, color: '#0d0d12' },
+            }
+          },
+          plugins: { legend: { labels: { font: { family: 'Syne', size: 10 }, color: '#2a2a35', boxWidth: 10 } } }
+        }
+      });
+    }
+  });
+}
+
+// ─── §6 ANALYSIS ───
+function buildAnalysis(o) {
+  const dims = [
+    { key:'d1', label:'D1 — Discoverability', rat: o.d1_rationale },
+    { key:'d2', label:'D2 — Credibility Signal', rat: o.d2_rationale },
+    { key:'d3', label:'D3 — Identity Coherence', rat: o.d3_rationale },
+    { key:'d4', label:'D4 — Market Voice', rat: o.d4_rationale },
+    { key:'d5', label:'D5 — Competitive Delta', rat: o.d5_rationale },
+  ];
+
+  const analystNote = o.analyst_note
+    ? `<div class="analyst-note"><div class="an-lbl">Analyst Note</div><div class="an-text">${o.analyst_note}</div></div>`
+    : '';
+
+  const scoringNotes = o.scoring_notes
+    ? `<div class="scoring-notes"><div class="sn-lbl">Scoring Notes</div><div class="sn-text">${o.scoring_notes}</div></div>`
+    : '';
+
+  document.getElementById('analysisSection').innerHTML = `
+    ${analystNote}
+    <div class="rat-grid">
+      ${dims.map(d => `
+        <div class="rat-panel">
+          <div class="rat-dim">${d.label}</div>
+          <div class="rat-score-row">
+            <div class="rat-score" style="color:${scoreColor(o[d.key])}">${fmt1(o[d.key])}</div>
+            <div class="rat-band">${o[d.key + '_band'] || ''} · weight ${d.key==='d1'?'20%':d.key==='d2'?'25%':d.key==='d3'?'15%':d.key==='d4'?'25%':'15%'}</div>
+          </div>
+          <div class="rat-text">${d.rat || 'No rationale recorded for this dimension.'}</div>
+        </div>
+      `).join('')}
+      <div class="rat-panel" style="grid-column:1/-1;background:var(--paper-mid)">
+        <div class="rat-dim">Methodology</div>
+        <div class="rat-text" style="font-size:12px;color:var(--muted)">
+          Scores reflect the state of each dimension at audit date (${o.audit_date}). The Overall Presence Score is a weighted composite: OPS = (D1×0.20) + (D2×0.25) + (D3×0.15) + (D4×0.25) + (D5×0.15). The Mismatch Index is the absolute spread between Self-Presentation scores (D1, D2, D3) and Market Perception (D4), surfacing the gap between claimed and experienced identity. Framework scores (F1–F3) are derived composites applying audience-specific dimension weights. Scoring rubric: v1.2 Final.
+        </div>
+      </div>
+    </div>
+    ${scoringNotes}
+  `;
+}
+
+// ─── §7 PRIORITY GAP ───
+function buildPriority(o) {
+  const dimFull = {
+    'D1': 'D1 — Discoverability',
+    'D2': 'D2 — Credibility Signal',
+    'D3': 'D3 — Identity Coherence',
+    'D4': 'D4 — Market Voice',
+    'D5': 'D5 — Competitive Delta',
+  };
+  const gapDescriptions = {
+    'D1': 'Improving discoverability at this stage produces direct returns across every other dimension — content that cannot be found generates no commercial signal regardless of its quality.',
+    'D2': 'Credibility Signal carries a 25% weighting and feeds directly into both the Mismatch Index and all three audience frameworks. A structured investment in clinical evidence infrastructure produces compound returns.',
+    'D3': 'Identity coherence improvements amplify the signal value of every other dimension. An organisation with strong scores elsewhere that presents inconsistently loses the compounding effect of that strength.',
+    'D4': 'Market Voice is the dimension with the highest external impact on commercial decision-making. Improvements here reduce the Mismatch Index, increase F1 and F3 framework scores, and produce the most visible signal to prospective patients, clinicians, and investors.',
+    'D5': 'Closing the competitive gap in this dimension positions the organisation to gain share in markets where the current delta is working against it. Competitive Delta improvements are measurable and trackable within a 12-month horizon.',
+  };
+
+  const gapKey = (o.priority_gap || '').split(' — ')[0].trim(); // e.g. 'D4'
+  const gapLabel = dimFull[gapKey] || o.priority_gap || 'Not assigned';
+  const gapDesc = gapDescriptions[gapKey] || 'A targeted intervention in this dimension would produce the greatest improvement in OPS and Mismatch Index simultaneously.';
+
+  document.getElementById('prioritySection').innerHTML = `
+    <div class="priority-block">
+      <div class="priority-icon">↗</div>
+      <div>
+        <div class="priority-lbl">Highest-Leverage Intervention — Priority Gap</div>
+        <div class="priority-dim">${gapLabel}</div>
+        <div class="priority-desc">${gapDesc}</div>
+      </div>
+    </div>
+  `;
+}
+
+// ─── §8 WORD CLOUD ───
+function buildWordCloud(o) {
+  const allText = [
+    o.d1_rationale, o.d2_rationale, o.d3_rationale, o.d4_rationale, o.d5_rationale,
+    o.scoring_notes, o.analyst_note
+  ].join(' ').toLowerCase();
+
+  const stopwords = new Set([
+    'the','a','an','and','or','but','in','on','at','to','for','of','with','by',
+    'from','this','that','it','is','are','was','were','be','been','has','have',
+    'had','not','no','as','its','which','who','their','they','them','these',
+    'those','into','than','more','also','both','each','all','any','can','will',
+    'would','could','should','may','might','must','shall','do','does','did',
+    'get','set','use','used','using','across','within','about','between','through',
+    'where','when','what','how','why','if','but','however','although','though',
+    'while','one','two','three','most','well','very','been','have','has','than',
+    'against','over','under','above','below','other','same','own','s','t','re',
+    'score','scored','scoring','dimension','organisation','digital','presence'
+  ]);
+
+  const freq = {};
+  allText.replace(/[^a-z\s-]/g, ' ').split(/\s+/).forEach(w => {
+    w = w.replace(/^-+|-+$/g, '');
+    if (w.length < 4 || stopwords.has(w)) return;
+    freq[w] = (freq[w] || 0) + 1;
+  });
+
+  const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0, 60);
+  const maxF = sorted[0]?.[1] || 1;
+
+  const wcHtml = sorted.map(([w, f]) => {
+    const size = 12 + Math.round((f / maxF) * 22);
+    const opacity = 0.45 + (f / maxF) * 0.55;
+    return `<span class="wc-word" style="font-size:${size}px;opacity:${opacity}" title="${f} occurrences">${w}</span>`;
+  }).join('');
+
+  document.getElementById('wordcloudSection').innerHTML = `
+    <div class="wc-wrap">${wcHtml}</div>
+    <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--muted);margin-top:10px;letter-spacing:0.08em">
+      Key terms extracted from scoring rationale · Size weighted by frequency · ${sorted.length} distinct signal terms identified
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>
