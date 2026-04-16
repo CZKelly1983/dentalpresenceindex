@@ -4,6 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Dental Presence Index — Forensic Scoring of the North American Dental Sector</title>
+
+<meta name="description" content="A forensic digital-presence score across 163 North American DSOs and dental technology businesses. 82% scored underperforming or liability. Find your position.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Dental Presence Index">
+<meta property="og:description" content="163 North American DSOs and dental technology businesses, scored. 82% underperforming or liability. Find your position.">
+<meta property="og:url" content="https://dentalpresenceindex.theunanswered.co.uk">
+<meta property="og:site_name" content="The Unanswered">
+<!-- Replace with an actual PNG once generated: 1200x630, dark background, the sample scorecard -->
+<meta property="og:image" content="https://dentalpresenceindex.theunanswered.co.uk/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Dental Presence Index">
+<meta name="twitter:description" content="163 North American DSOs and dental technology businesses, scored. 82% underperforming or liability.">
+<meta name="twitter:image" content="https://dentalpresenceindex.theunanswered.co.uk/og.png">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a09'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-weight='400' fill='%23c8b882'%3EDPI%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1122,6 +1141,20 @@
     .hero-stats { display: none; }
 
     nav .nav-links { display: none; }
+
+    /* Override inline grids that don't belong on mobile */
+    .split-2col { grid-template-columns: 1fr !important; gap: 2rem !important; }
+    .split-3col { grid-template-columns: 1fr !important; }
+
+    /* Tighten hero so the CTA sits above the fold on phones */
+    .hero h1 { font-size: clamp(2.2rem, 9vw, 3.4rem) !important; line-height: 1.05 !important; }
+    .hero-sub { font-size: 0.95rem !important; }
+    /* Leave room above the sticky mobile CTA bar */
+    .hero { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)) !important; }
+  }
+
+  @media (max-width: 600px) {
+    .split-3col { grid-template-columns: 1fr !important; }
   }
 
   @media (max-width: 600px) {
@@ -1205,7 +1238,7 @@
     <li><a href="#the198">The 198</a></li>
     <li><a href="#universe">The universe</a></li>
     <li><a href="#sample">See a score</a></li>
-    <li><a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Let%27s%20Talk" class="nav-cta">Talk to Chris →</a></li>
+    <li><a href="#" onclick="DPI.open('nav');return false" class="nav-cta">Talk to Chris →</a></li>
   </ul>
 </nav>
 
@@ -1224,7 +1257,7 @@
   </h1>
 
   <p class="hero-sub">
-    Every patient choosing a practice, every clinician considering a role, every investor doing diligence — they all read the same signal. Most organisations in the sector have never seen it themselves. We've scored 164 organisations to establish the benchmark. If you're not in it, you can be.
+    Every patient choosing a practice, every clinician considering a role, every investor doing diligence — they all read the same signal. Most organisations in the sector have never seen it themselves. We've scored 163 organisations to establish the benchmark. If you're not in it, you can be.
   </p>
 
   <div style="margin-bottom:1.5rem;font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">
@@ -1232,13 +1265,13 @@
   </div>
 
   <div class="hero-meta">
-    <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Confidential%20Consultation" class="hero-cta-primary">See your position in the 164</a>
+    <a href="#" onclick="DPI.open('hero');return false" class="hero-cta-primary">See your position in the 163</a>
     <a href="#the-mismatch" class="hero-cta-secondary">What this is ↓</a>
   </div>
 
   <div class="hero-stats">
     <div>
-      <div class="hero-stat-num">164</div>
+      <div class="hero-stat-num">163</div>
       <div class="hero-stat-label">Organisations scored</div>
     </div>
     <div>
@@ -1313,7 +1346,7 @@
   <div class="section-inner">
     <div class="section-label">Before we pointed it at your sector</div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;" class="fade-in">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;" class="fade-in split-2col">
       <div>
         <h2 style="font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;color:var(--white);line-height:1.15;margin-bottom:1.25rem">
           The instrument was built<br>and proven elsewhere first.<br><em>That matters.</em>
@@ -1338,7 +1371,7 @@
           <div style="font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--accent);line-height:1;margin-bottom:0.3rem">198</div>
           <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em">Companies scored · All historical failures</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);" class="split-2col">
           <div style="background:var(--off-black);padding:1.25rem;">
             <div style="font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--primary);line-height:1;margin-bottom:0.3rem">10</div>
             <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;line-height:1.4">Death zones — each a distinct failure architecture</div>
@@ -1433,7 +1466,7 @@
   <div class="section-inner">
     <div class="section-label">What a score looks like</div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:3rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-bottom:3rem" class="split-2col">
       <div class="fade-in">
         <h2 style="font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;color:var(--white);line-height:1.15;margin-bottom:1.25rem">
           This is the format.<br><em>The numbers are real.<br>The name isn't.</em>
@@ -1470,7 +1503,7 @@
       </div>
 
       <!-- OPS + MI row -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border);">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border);" class="split-3col">
         <div style="background:var(--off-black);padding:1.5rem 2rem;">
           <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Overall Presence Score</div>
           <div style="font-family:var(--serif);font-size:2.8rem;font-weight:400;color:var(--primary);line-height:1">4.3<span style="font-size:1.2rem;color:var(--muted)">/10</span></div>
@@ -1547,7 +1580,7 @@
       <!-- Framework scores -->
       <div style="padding:1.5rem 2rem;border-bottom:1px solid var(--border);background:var(--off-black);">
         <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem">Framework scores</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);" class="split-3col">
           <div style="background:var(--dark);padding:1rem 1.25rem;">
             <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.4rem">F1 Patient & Talent</div>
             <div style="font-family:var(--serif);font-size:1.8rem;font-weight:400;color:var(--primary);line-height:1">5.1</div>
@@ -1682,7 +1715,7 @@
       </tbody>
     </table>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);" class="fade-in">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);" class="fade-in split-3col">
       <div style="background:var(--dark);padding:1.25rem 1.5rem;">
         <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Presence tiers</div>
         <div style="font-family:var(--mono);font-size:0.8rem;color:var(--secondary);line-height:1.8">
@@ -1859,7 +1892,7 @@
       Every organisation in the audit receives a scored position across five dimensions, a Mismatch Index, and a Competitive Delta against the organisations competing for the same patients, clinicians, and capital. The score exists whether you see it or not. The gap is visible to anyone doing due diligence before a decision — a patient, a clinician, an investor.
     </p>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem;" class="fade-in">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem;" class="fade-in split-3col">
       <div style="background:var(--off-black);padding:2rem;">
         <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-dim);margin-bottom:1.25rem">Your position</div>
         <p style="font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--white);line-height:1.3;margin-bottom:0.75rem">Where you sit in the sector</p>
@@ -1885,7 +1918,7 @@
           <p style="font-size:0.88rem;color:var(--secondary);line-height:1.65">No report to buy. Just a conversation.</p>
         </div>
         <div style="flex-shrink:0">
-          <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Let%27s%20Talk" class="btn-primary" style="white-space:nowrap">Talk to Chris →</a>
+          <a href="#" onclick="DPI.open('middle');return false" class="btn-primary" style="white-space:nowrap">Talk to Chris →</a>
         </div>
       </div>
     </div>
@@ -1901,9 +1934,9 @@
 
     <div class="universe-grid">
       <div class="fade-in">
-        <h2>164 organisations.<br><em>The benchmark cohort.<br>82% underperforming<br>or liability.</em></h2>
+        <h2>163 organisations.<br><em>The benchmark cohort.<br>82% underperforming<br>or liability.</em></h2>
         <p>
-          164 organisations scored across DSO and dental technology — from Heartland Dental with 1,900+ locations to pre-Series A dental AI businesses that launched in 2024. This is the benchmark cohort: the established field against which every new score is measured.
+          163 organisations scored across DSO and dental technology — from Heartland Dental with 1,900+ locations to pre-Series A dental AI businesses that launched in 2024. This is the benchmark cohort: the established field against which every new score is measured.
         </p>
         <p>
           Only two organisations in the entire dataset scored Sector Leader. The rest sit in Competitive, Underperforming, or Liability — and most don't know which. If you're not in the initial set, you can be scored against it.
@@ -1914,7 +1947,7 @@
             <div class="count-label">DSOs scored</div>
           </div>
           <div class="count-cell">
-            <div class="count-num">74</div>
+            <div class="count-num">73</div>
             <div class="count-label">Dental tech businesses</div>
           </div>
           <div class="count-cell">
@@ -1989,13 +2022,13 @@
 <section class="cta-section" id="contact">
   <div class="status-badge">
     <span class="status-dot"></span>
-    Scoring complete · 164 organisations · Dataset live
+    Scoring complete · 163 organisations · Dataset live
   </div>
 
   <h2>You're either already in this.<br><em>Or you should be.</em></h2>
 
   <p>
-    164 organisations form the benchmark cohort. If you're in it, your score exists — and so does every competitor's. Either way, the conversation is the same: a call with Chris to walk through your findings, understand where the gaps are, and leave with a clear action plan.
+    163 organisations form the benchmark cohort. If you're in it, your score exists — and so does every competitor's. Either way, the conversation is the same: a call with Chris to walk through your findings, understand where the gaps are, and leave with a clear action plan.
   </p>
 
   <div style="max-width:520px;margin:0 auto 2.5rem;padding:1.25rem 1.75rem;border:1px solid var(--border);border-radius:2px;text-align:left;">
@@ -2006,12 +2039,12 @@
   </div>
 
   <div class="cta-buttons">
-    <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Confidential%20Consultation" class="btn-primary">See your position in the 164 — confidential</a>
-    <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Score%20Walkthrough" class="btn-secondary">Book a 20-minute score walkthrough</a>
+    <a href="#" onclick="DPI.open('final');return false" class="btn-primary">See your position in the 163 — confidential</a>
+    <a href="#" onclick="DPI.open('final_walkthrough');return false" class="btn-secondary">Book a 20-minute score walkthrough</a>
   </div>
 
   <p style="margin-top:2rem;font-family:var(--mono);font-size:9px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
-    Also relevant to PE firms and investors evaluating the sector &nbsp;·&nbsp; <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Investor%20Enquiry" style="color:var(--accent-dim);text-decoration:none">Talk to us</a>
+    Also relevant to PE firms and investors evaluating the sector &nbsp;·&nbsp; <a href="#" onclick="DPI.open('investor');return false" style="color:var(--accent-dim);text-decoration:none">Talk to us</a>
   </p>
 
 </section>
@@ -2059,10 +2092,429 @@
   });
 </script>
 
+<!-- ── REQUEST SCORE MODAL ── -->
+<style>
+  .dpi-modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(10,10,9,0.82);
+    backdrop-filter: blur(6px);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .dpi-modal-backdrop.open { display: flex; }
+
+  .dpi-modal {
+    background: var(--off-black);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    width: 100%;
+    max-width: 520px;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    position: relative;
+    animation: dpiFadeIn 0.2s ease-out;
+  }
+  @keyframes dpiFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .dpi-modal-header {
+    padding: 1.75rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dpi-modal-header .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .dpi-modal-header h3 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+  }
+  .dpi-modal-header p {
+    font-size: 0.85rem;
+    color: var(--secondary);
+    line-height: 1.6;
+  }
+
+  .dpi-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    font-family: var(--mono);
+  }
+  .dpi-close:hover { color: var(--primary); }
+
+  .dpi-modal-body { padding: 1.75rem 2rem 2rem; }
+
+  .dpi-field { margin-bottom: 1.1rem; }
+  .dpi-field label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .dpi-field label .req { color: var(--accent); }
+
+  .dpi-field input,
+  .dpi-field select,
+  .dpi-field textarea {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.65rem 0.85rem;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    color: var(--primary);
+    transition: border-color 0.15s;
+  }
+  .dpi-field input:focus,
+  .dpi-field select:focus,
+  .dpi-field textarea:focus {
+    outline: none;
+    border-color: var(--accent-dim);
+  }
+  .dpi-field textarea { min-height: 80px; resize: vertical; }
+
+  /* Honeypot — hidden from humans */
+  .dpi-hp {
+    position: absolute !important;
+    left: -9999px !important;
+    top: auto !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+  }
+
+  .dpi-submit {
+    display: block;
+    width: 100%;
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    border-radius: 2px;
+    padding: 0.85rem 1rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-top: 0.5rem;
+  }
+  .dpi-submit:hover { opacity: 0.88; }
+  .dpi-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .dpi-fallback {
+    text-align: center;
+    margin-top: 1rem;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .dpi-fallback a {
+    color: var(--accent-dim);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .dpi-fallback a:hover { color: var(--accent); }
+
+  .dpi-privacy {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .dpi-success {
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .dpi-success .check {
+    width: 48px; height: 48px;
+    border: 1px solid var(--accent-dim);
+    border-radius: 50%;
+    margin: 0 auto 1.25rem;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+    font-family: var(--serif);
+    font-size: 1.25rem;
+  }
+  .dpi-success h3 {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+  .dpi-success p {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    line-height: 1.65;
+    max-width: 360px;
+    margin: 0 auto 1.25rem;
+  }
+
+  @media (max-width: 600px) {
+    .dpi-modal-header { padding: 1.5rem 1.25rem 1rem; }
+    .dpi-modal-body { padding: 1.25rem 1.25rem 1.5rem; }
+    .dpi-modal-header h3 { font-size: 1.25rem; }
+  }
+</style>
+
+<div class="dpi-modal-backdrop" id="dpiModal" onclick="if(event.target===this)DPI.close()">
+  <div class="dpi-modal" role="dialog" aria-modal="true" aria-labelledby="dpiModalTitle">
+    <button class="dpi-close" onclick="DPI.close()" aria-label="Close">✕</button>
+
+    <div id="dpiFormView">
+      <div class="dpi-modal-header">
+        <div class="label" id="dpiModalLabel">Confidential enquiry</div>
+        <h3 id="dpiModalTitle">See your position in the 163</h3>
+        <p id="dpiModalSub">A short form, then a call with Chris. Nothing published, nothing shared.</p>
+      </div>
+
+      <div class="dpi-modal-body">
+        <!--
+          TODO: replace FORMSPREE_ENDPOINT below with a real endpoint.
+          The simplest path is Formspree (https://formspree.io) — create a form,
+          paste its URL in place of FORMSPREE_ENDPOINT. No backend code needed.
+          Alternatives: a Cloudflare Worker, a Netlify Form, or a custom /lead endpoint.
+        -->
+        <form id="dpiForm" onsubmit="return DPI.submit(event)">
+          <input type="hidden" name="_source" id="dpiSource" value="">
+          <input type="hidden" name="_subject" value="DPI — New confidential enquiry">
+
+          <div class="dpi-field">
+            <label for="dpiName">Name <span class="req">*</span></label>
+            <input type="text" id="dpiName" name="name" required autocomplete="name">
+          </div>
+
+          <div class="dpi-field">
+            <label for="dpiOrg">Organisation <span class="req">*</span></label>
+            <input type="text" id="dpiOrg" name="organisation" required autocomplete="organization">
+          </div>
+
+          <div class="dpi-field">
+            <label for="dpiRole">Your role <span class="req">*</span></label>
+            <select id="dpiRole" name="role" required>
+              <option value="">Select…</option>
+              <option>CEO / Founder</option>
+              <option>CMO / Marketing lead</option>
+              <option>COO / Ops lead</option>
+              <option>CFO / Finance</option>
+              <option>Board / Investor</option>
+              <option>PE / Portfolio operator</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="dpi-field">
+            <label for="dpiSegment">Segment</label>
+            <select id="dpiSegment" name="segment">
+              <option value="">Select…</option>
+              <option>DSO</option>
+              <option>Dental Technology</option>
+              <option>PE / Investor</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="dpi-field">
+            <label for="dpiEmail">Work email <span class="req">*</span></label>
+            <input type="email" id="dpiEmail" name="email" required autocomplete="email">
+          </div>
+
+          <div class="dpi-field">
+            <label for="dpiNote">Anything specific (optional)</label>
+            <textarea id="dpiNote" name="note" placeholder="e.g. 'Curious whether we're in the 163' or 'PE diligence next month'"></textarea>
+          </div>
+
+          <!-- Honeypot (bots fill it, humans don't see it) -->
+          <div class="dpi-hp" aria-hidden="true">
+            <label>Leave this empty</label>
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="dpi-submit" id="dpiSubmitBtn">Send confidentially →</button>
+
+          <div class="dpi-fallback">
+            Prefer email? <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Confidential%20Consultation">chris@theunanswered.co.uk</a>
+          </div>
+
+          <p class="dpi-privacy">
+            Submissions go to Chris directly. Nothing is published or shared. See <a href="https://www.theunanswered.co.uk/privacy-policy.html" target="_blank" style="color:var(--accent-dim)">privacy policy</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <div id="dpiSuccessView" style="display:none">
+      <div class="dpi-success">
+        <div class="check">✓</div>
+        <h3>Thank you — request received.</h3>
+        <p>Chris will reply personally within two working days to arrange the walkthrough.</p>
+        <p style="font-size:0.8rem;color:var(--muted);margin-top:1.5rem">If you don't hear back, check junk for a message from <strong style="color:var(--secondary)">chris@theunanswered.co.uk</strong>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.DPI = (function() {
+    // ─── CONFIG ─────────────────────────────────────────────────────
+    // Replace with your Formspree endpoint, e.g.:
+    //   'https://formspree.io/f/abcd1234'
+    // If left as the placeholder, the form falls back to mailto:.
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpqkpdre';
+    // ────────────────────────────────────────────────────────────────
+
+    const modal = document.getElementById('dpiModal');
+    const formView = document.getElementById('dpiFormView');
+    const successView = document.getElementById('dpiSuccessView');
+    const btn = document.getElementById('dpiSubmitBtn');
+    const sourceField = document.getElementById('dpiSource');
+
+    // Optional per-source copy
+    const COPY = {
+      investor: {
+        label: 'Investor enquiry',
+        title: 'Talk to us about the sector',
+        sub: 'Tell us a little about what you are looking at and we will set up a confidential call.'
+      },
+      final_walkthrough: {
+        label: '20-minute walkthrough',
+        title: 'Book a score walkthrough',
+        sub: 'Chris will walk you through your score, your gaps, and the single priority intervention.'
+      },
+      mobile_walkthrough: {
+        label: '20-minute walkthrough',
+        title: 'Book a score walkthrough',
+        sub: 'Chris will walk you through your score, your gaps, and the single priority intervention.'
+      }
+    };
+    const DEFAULT_COPY = {
+      label: 'Confidential enquiry',
+      title: 'See your position in the 163',
+      sub: 'A short form, then a call with Chris. Nothing published, nothing shared.'
+    };
+
+    function setCopy(source) {
+      const c = COPY[source] || DEFAULT_COPY;
+      document.getElementById('dpiModalLabel').textContent = c.label;
+      document.getElementById('dpiModalTitle').textContent = c.title;
+      document.getElementById('dpiModalSub').textContent = c.sub;
+    }
+
+    function open(source) {
+      sourceField.value = source || 'unknown';
+      setCopy(source);
+      formView.style.display = '';
+      successView.style.display = 'none';
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      // Focus first field for keyboard/screen-reader users
+      setTimeout(() => document.getElementById('dpiName').focus(), 50);
+    }
+
+    function close() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) close();
+    });
+
+    async function submit(event) {
+      event.preventDefault();
+      const form = event.target;
+
+      // Honeypot check
+      if (form._gotcha.value) { close(); return false; }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      // Safety net: if the endpoint is missing/unset, fall back to mailto.
+      if (!FORMSPREE_ENDPOINT || FORMSPREE_ENDPOINT === 'FORMSPREE_ENDPOINT_HERE') {
+        const body = `Name: ${form.name.value}
+Organisation: ${form.organisation.value}
+Role: ${form.role.value}
+Segment: ${form.segment.value}
+Email: ${form.email.value}
+Source: ${form._source.value}
+
+Note:
+${form.note.value}`;
+        window.location.href =
+          'mailto:chris@theunanswered.co.uk?subject=' +
+          encodeURIComponent('DPI — Confidential enquiry') +
+          '&body=' + encodeURIComponent(body);
+        btn.disabled = false;
+        btn.textContent = 'Send confidentially →';
+        return false;
+      }
+
+      try {
+        const data = new FormData(form);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const resp = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' },
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        if (resp.ok) {
+          formView.style.display = 'none';
+          successView.style.display = '';
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch (err) {
+        alert('Sorry — submission failed. Please email chris@theunanswered.co.uk directly, or try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send confidentially →';
+      }
+      return false;
+    }
+
+    return { open, close, submit };
+  })();
+</script>
+
 <!-- MOBILE STICKY CTA -->
 <div class="mobile-cta">
-  <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Confidential%20Consultation" class="mobile-cta-primary">See your position</a>
-  <a href="mailto:chris@theunanswered.co.uk?subject=The%20Dental%20Presence%20Index%20%E2%80%94%20Score%20Walkthrough" class="mobile-cta-secondary">Book a walkthrough</a>
+  <a href="#" onclick="DPI.open('mobile');return false" class="mobile-cta-primary">See your position</a>
+  <a href="#" onclick="DPI.open('mobile_walkthrough');return false" class="mobile-cta-secondary">Book a walkthrough</a>
 </div>
 
 </body>
